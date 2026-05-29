@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://mjr25wnjlwi4"
+path="res://.godot/imported/gradientHeightMap.glsl-2cafd542a02c123a9f6768532a7f7719.res"
+
+[deps]
+
+source_file="res://shader/gradientHeightMap.glsl"
+dest_files=["res://.godot/imported/gradientHeightMap.glsl-2cafd542a02c123a9f6768532a7f7719.res"]
+
+[params]
+

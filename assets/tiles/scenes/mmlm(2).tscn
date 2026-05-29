@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://bqcksmhe6l03j"]
+
+[ext_resource type="PackedScene" uid="uid://bhbxc814un522" path="res://assets/tiles/raw/MMLM(2).glb" id="1_uxof8"]
+[ext_resource type="Script" uid="uid://b0778dawee5tk" path="res://script/MeshDistortionTool.gd" id="2_1kqhg"]
+
+[node name="MMLM(2)" unique_id=996748469 node_paths=PackedStringArray("mesh") instance=ExtResource("1_uxof8")]
+script = ExtResource("2_1kqhg")
+mesh = NodePath("model_0_021")
+
+[node name="model_0_021" parent="." index="0" unique_id=2097152017]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 40, 0)

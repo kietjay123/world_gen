@@ -1,0 +1,237 @@
+[gd_resource type="Resource" script_class="TileDataRes" format=3 uid="uid://le85lp3esjii"]
+
+[ext_resource type="Script" uid="uid://4clsl1h1cq84" path="res://assets/tiles/tile_data.gd" id="1_tyoaa"]
+
+[resource]
+script = ExtResource("1_tyoaa")
+lookUptable = Dictionary[int, Dictionary]({
+0: {
+"rotation": 0,
+"type": "WWWW"
+},
+1: {
+"rotation": 3,
+"type": "LWWW"
+},
+2: {
+"rotation": 3,
+"type": "MWWW"
+},
+3: {
+"rotation": 2,
+"type": "LWWW"
+},
+4: {
+"rotation": 2,
+"type": "LLWW"
+},
+5: {
+"rotation": 2,
+"type": "LMWW"
+},
+6: {
+"rotation": 2,
+"type": "MWWW"
+},
+8: {
+"rotation": 2,
+"type": "MMWW"
+},
+9: {
+"rotation": 1,
+"type": "LWWW"
+},
+10: {
+"rotation": 1,
+"type": "LWLW"
+},
+12: {
+"rotation": 1,
+"type": "LLWW"
+},
+13: {
+"rotation": 2,
+"type": "LLWL"
+},
+14: {
+"rotation": 1,
+"type": "LLMW"
+},
+15: {
+"rotation": 1,
+"type": "LMWW"
+},
+17: {
+"rotation": 1,
+"type": "LMMW"
+},
+18: {
+"rotation": 1,
+"type": "MWWW"
+},
+20: {
+"rotation": 1,
+"type": "MWMW"
+},
+24: {
+"rotation": 1,
+"type": "MMWW"
+},
+26: {
+"rotation": 2,
+"type": "MMWM"
+},
+27: {
+"rotation": 0,
+"type": "LWWW"
+},
+28: {
+"rotation": 3,
+"type": "LLWW"
+},
+30: {
+"rotation": 0,
+"type": "LWLW"
+},
+31: {
+"rotation": 3,
+"type": "LLWL"
+},
+36: {
+"rotation": 0,
+"type": "LLWW"
+},
+37: {
+"rotation": 0,
+"type": "LLWL"
+},
+39: {
+"rotation": 1,
+"type": "LLWL"
+},
+40: {
+"rotation": 0,
+"type": "LLLL"
+},
+41: {
+"rotation": 3,
+"type": "MLLL"
+},
+42: {
+"rotation": 0,
+"type": "LLMW"
+},
+43: {
+"rotation": 2,
+"type": "MLLL"
+},
+44: {
+"rotation": 2,
+"type": "MMLL"
+},
+45: {
+"rotation": 0,
+"type": "LMWW"
+},
+46: {
+"rotation": 3,
+"type": "LLMW"
+},
+49: {
+"rotation": 1,
+"type": "MLLL"
+},
+50: {
+"rotation": 1,
+"type": "MLML"
+},
+51: {
+"rotation": 0,
+"type": "LMMW"
+},
+52: {
+"rotation": 1,
+"type": "MMLL"
+},
+53: {
+"rotation": 2,
+"type": "MMLM"
+},
+54: {
+"rotation": 0,
+"type": "MWWW"
+},
+55: {
+"rotation": 3,
+"type": "LMWW"
+},
+56: {
+"rotation": 3,
+"type": "MMWW"
+},
+58: {
+"rotation": 2,
+"type": "LLMW"
+},
+59: {
+"rotation": 2,
+"type": "LMMW"
+},
+60: {
+"rotation": 0,
+"type": "MWMW"
+},
+62: {
+"rotation": 3,
+"type": "MMWM"
+},
+67: {
+"rotation": 0,
+"type": "MLLL"
+},
+68: {
+"rotation": 3,
+"type": "MMLL"
+},
+70: {
+"rotation": 0,
+"type": "MLML"
+},
+71: {
+"rotation": 3,
+"type": "MMLM"
+},
+72: {
+"rotation": 0,
+"type": "MMWW"
+},
+73: {
+"rotation": 3,
+"type": "LMMW"
+},
+74: {
+"rotation": 0,
+"type": "MMWM"
+},
+76: {
+"rotation": 0,
+"type": "MMLL"
+},
+77: {
+"rotation": 0,
+"type": "MMLM"
+},
+78: {
+"rotation": 1,
+"type": "MMWM"
+},
+79: {
+"rotation": 1,
+"type": "MMLM"
+},
+80: {
+"rotation": 0,
+"type": "MMMM"
+}
+})
+metadata/_custom_type_script = "uid://4clsl1h1cq84"

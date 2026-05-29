@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://1bd1qqp4k6g4"]
+
+[ext_resource type="PackedScene" uid="uid://cmxrnxhiof71p" path="res://assets/tiles/raw/LMMW(1).glb" id="1_scoh8"]
+[ext_resource type="Script" uid="uid://b0778dawee5tk" path="res://script/MeshDistortionTool.gd" id="2_eqyen"]
+
+[node name="LMMW(1)" unique_id=1420554962 instance=ExtResource("1_scoh8")]
+script = ExtResource("2_eqyen")
+
+[node name="model_0_033" parent="." index="0" unique_id=57776441]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 40, 0)

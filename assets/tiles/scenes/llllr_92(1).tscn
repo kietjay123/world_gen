@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://d01epg7c1nhgf"]
+
+[ext_resource type="PackedScene" uid="uid://bkvia4oeea025" path="res://assets/tiles/raw/LLLLR92(1).glb" id="1_8iswt"]
+
+[node name="LLLLR92(1)" unique_id=1967983657 instance=ExtResource("1_8iswt")]
+
+[node name="model_0_034" parent="." index="0" unique_id=1369259008]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 40, 0)

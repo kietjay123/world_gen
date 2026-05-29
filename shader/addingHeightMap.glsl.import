@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://cirflmv8o1bmc"
+path="res://.godot/imported/addingHeightMap.glsl-e81a9f9c32c4dc85338ba92ba68665a2.res"
+
+[deps]
+
+source_file="res://shader/addingHeightMap.glsl"
+dest_files=["res://.godot/imported/addingHeightMap.glsl-e81a9f9c32c4dc85338ba92ba68665a2.res"]
+
+[params]
+

@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://doaulf4ot56r7"]
+
+[ext_resource type="PackedScene" uid="uid://cs0f08tmy85hd" path="res://assets/tiles/raw/MWWW(2).glb" id="1_cprag"]
+[ext_resource type="Script" uid="uid://b0778dawee5tk" path="res://script/MeshDistortionTool.gd" id="2_h374y"]
+
+[node name="MWWW(2)" unique_id=1825002581 node_paths=PackedStringArray("mesh") instance=ExtResource("1_cprag")]
+script = ExtResource("2_h374y")
+mesh = NodePath("model_0_005")
+
+[node name="model_0_005" parent="." index="0" unique_id=488463142]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 40, 0)

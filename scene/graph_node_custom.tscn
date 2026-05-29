@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://ct8x7jua0f7ms"]
+
+[ext_resource type="Texture2D" uid="uid://c3fihd4ur36yx" path="res://icon.svg" id="1_4fr5w"]
+
+[node name="GraphNodeCustom" type="Marker3D"]
+gizmo_extents = 0.5
+metadata/_custom_type_script = "uid://waji5c7eo6e"
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+billboard = 1
+texture = ExtResource("1_4fr5w")
