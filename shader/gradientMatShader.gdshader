@@ -8,8 +8,8 @@ void fragment() {
 	vec4 result = COLOR;
 	float rateX = dFdxFine(result.x);
 	float rateY = dFdyFine(result.x);
-	vec2 test =  vec2(rateX, rateY);
-	COLOR = vec4(test, 0.0, 1.0);
+	vec2 test =  (vec2(rateX, rateY));
+	COLOR = vec4(test * 0.5 + 0.5, 0.0, 1.0);
 }
 
 //void light() {

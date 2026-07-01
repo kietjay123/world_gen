@@ -355,6 +355,21 @@ func createInsideGrid() -> void:
 					activeSquare.remove_at(k)
 		activeSquare.append(afterSplitSquares[i])
 		insideNodes[i] = newNode
+	for ii in insideNodes :
+		var neighbourVer : Array[Array] = []
+		var sortedNeighbor : Array[CentroidNodeCustom] = [null, null, null, null]
+		for jj in ii.get_neighbour() :
+			neighbourVer.append(jj.get_verticies())
+		for jjj in 4 :
+			var firstVertex : GraphNodeCustom = ii.get_verticies()[jjj]
+			var secondVertex : GraphNodeCustom =ii.get_verticies()[(jjj + 1) % 4]
+
+			var matches : Array[int] = findGeometryWithVertices(neighbourVer, [firstVertex, secondVertex])
+			if matches.size() != 0 :
+				sortedNeighbor[jjj] = ii.get_neighbour()[matches[0]]
+		ii.clear_neighbor()
+		for jjjj in sortedNeighbor :
+			ii.add_neighbour(jjjj)
 	insideGrid.append_array(insideNodes)
 
 func renderGrid() -> void :
@@ -411,9 +426,10 @@ func renderGrid() -> void :
 			insideGridThing.add_child(i)
 			i.owner = get_tree().edited_scene_root
 			for j in i.neighbour :
-				var neighbourLine : Line3D = Line3D.new(Vector3.ZERO, Vector3.ZERO.lerp(j.position - i.position, 0.5), Color.WHITE)
-				i.add_child(neighbourLine)
-				neighbourLine.owner = get_tree().edited_scene_root
+				if j :
+					var neighbourLine : Line3D = Line3D.new(Vector3.ZERO, Vector3.ZERO.lerp(j.position - i.position, 0.5), Color.WHITE)
+					i.add_child(neighbourLine)
+					neighbourLine.owner = get_tree().edited_scene_root
 
 #region Utilities
 #GRAPH UTILITY
@@ -424,6 +440,10 @@ func addNodeNeighbour(nodeOne : GraphNodeCustom, nodeTwo : GraphNodeCustom) -> v
 func removeNodeNeighbour(nodeOne : GraphNodeCustom, nodeTwo : GraphNodeCustom) -> void:
 	nodeOne.remove_neighbour(nodeTwo)
 	nodeTwo.remove_neighbour(nodeOne)
+
+func clearNodeNeighbor(node : GraphNodeCustom) -> void :
+	for i in node.get_neighbour() :
+		removeNodeNeighbour(node, i)
 
 #highly coupled to createGrid
 #can rewrite to caculate using grid spacing and node position
@@ -480,15 +500,6 @@ func findGeometryWithVertices(geometries: Array[Array], vertices: Array[GraphNod
 		#
 	#print("pool" + str(pool))
 	return pool
-
-#MESH UTILITY
-func baseThreeToBaseTen(arg : String) -> int :
-	var result : int  = 0
-	var power : int = 0
-	for i in range(arg.length() - 1, -1, -1) :
-		result += arg[i].to_int() * (3 ** power)
-		power += 1
-	return result 
 #endregion
 
 func create(parGridSize: int = gridSize, parSeed: String = userSeed) -> void:
@@ -500,18 +511,10 @@ func create(parGridSize: int = gridSize, parSeed: String = userSeed) -> void:
 		userSeed = parSeed
 	renderGrid()
 
-var reverseTypeLookUp : Dictionary[String, String] =  {"W" : "0", "L" : "1", "M" : "2"}
 func loadMesh( centroid : CentroidNodeCustom ) -> Node3D :
-	var tileType : String = ""
-	for i in centroid.get_verticies().size()  :
-		tileType += centroid.get_verticies()[i].get_type_string()
+	var tileTypeBaseTen : int = centroid.getCentroidCode()
 	
-	var tileTypeBaseThree : String = ""
-	for ii in tileType :
-		tileTypeBaseThree += reverseTypeLookUp[ii]
-	var tileTypeBaseTen : int = baseThreeToBaseTen(tileTypeBaseThree)
-	
-	# does not apply multi tile 
+	#BUG is not deterministic
 	var randMesh : int = randi() % tileData.meshNameLookUp[tileData.lookUptable[tileTypeBaseTen]["type"]]["names"].size()
 	var meshPath : String = tileData.scenePath + tileData.meshNameLookUp[tileData.lookUptable[tileTypeBaseTen]["type"]]["names"][randMesh] + ".tscn"
 	var mesh : Node3D = load(meshPath).instantiate()
@@ -529,8 +532,168 @@ func renderMesh() -> void :
 	add_child(meshesNode)
 	meshesNode.owner = get_tree().edited_scene_root
 	for i in insideGrid.size() :
-		#if insideGrid[i].name == " -1_0 0 ~ -2_0 0 -1_0 0 -0_5 -1 ~ -1_0 0 -1_25 -0_5" :
-			var newMesh : Node3D = loadMesh(insideGrid[i])
-			meshes.append(newMesh)
-			meshesNode.add_child(newMesh)
-			newMesh.owner = get_tree().edited_scene_root
+		var newMesh : Node3D = loadMesh(insideGrid[i])
+		meshes.append(newMesh)
+		meshesNode.add_child(newMesh)
+		newMesh.owner = get_tree().edited_scene_root
+
+func setInsideGridType() -> void :
+	for i in insideGrid :
+		i.set_centroid_tile_type()
+
+#region river stuff
+
+func getPotValidRiverNode() -> Dictionary:
+	const VALID_CODES : Array[int] = [76, 52, 44, 68]
+	const VALID_END_CODES : Array[int] = [36, 12, 4, 28]
+	const VALID_START_CODES : Array[int] = [80, 40]
+	var allResult : Array[CentroidNodeCustom] = []
+	var startResult : Array[CentroidNodeCustom] = []
+	var endResult : Array[CentroidNodeCustom] = []
+	for node in insideGrid:
+		var code = node.getCentroidCode()
+		if VALID_CODES.has(code):
+			allResult.append(node)
+		elif VALID_START_CODES.has(code) :
+			startResult.append(node)
+		elif VALID_END_CODES.has(code) :
+			endResult.append(node)
+	var final := {
+		"start" : startResult,
+		"valid" : allResult,
+		"end" : endResult,
+	}
+	return final
+
+const VALID_RIVER_NODE : Array = [[40, 76, 52, 44, 68], [80]]
+const VALID_RIVER_END_CODE : Array[int] = [36, 12, 4, 28]
+const TRANSITION_NODE : Array[int] = [76, 52, 44, 68]
+
+#BUG dont use 
+func createRiverFromSource(gradientField : Image, start : CentroidNodeCustom = null, length = 30) -> void:
+	var validNode : Dictionary = getPotValidRiverNode()
+	
+	if !start:
+		start = validNode["start"][randy.randi_range(0, validNode["start"].size()) -1]
+		
+	var from : CentroidNodeCustom = start
+	var to : CentroidNodeCustom = null
+	var previous : CentroidNodeCustom = null # Tracks history for transition nodes
+	
+	for i in length:
+		# 1. HANDLE TRANSITION NODES
+		if TRANSITION_NODE.has(from.getCentroidCode()) and previous != null:
+			var lastNodeIdx : int = from.get_neighbour().find(previous)
+			# Maintain your relative array wrapping logic safely
+			var nextNodeIdx = (lastNodeIdx - 2 + from.get_neighbour().size()) % from.get_neighbour().size()
+			to = from.get_neighbour()[nextNodeIdx]
+			
+		# 2. HANDLE STANDARD DOWNHILL SEARCH
+		else:
+			var neighbors : Array[GraphNodeCustom] = from.get_neighbour()
+			
+			# CRITICAL: Negate the vector field to flow DOWNHILL away from the maximum
+			var fromDir : Vector2 = -getGradientDir(from, gradientField)
+			
+			# Magnitude Check: Stop if the terrain becomes completely flat
+			if fromDir.length_squared() < 0.01:
+				break 
+				
+			var bestScore : float = -INF
+			var nextNode : CentroidNodeCustom = null
+			
+			for j in neighbors:
+				# Validate neighbor properties
+				if !VALID_RIVER_NODE.has(j.getCentroidCode()) || j.river || !validNextRiverNode(from, j):
+					continue
+					
+				var temp2d := Vector2((j.get_position() - from.get_position()).x, (j.get_position() - from.get_position()).z)
+				
+				# Calculate alignment with downhill path using Dot Product
+				var score : float = fromDir.normalized().dot(temp2d.normalized())
+				
+				if score > bestScore:
+					bestScore = score
+					nextNode = j
+					
+			# Direction Check: If the best option forces us uphill (score <= 0), 
+			# we have reached a local minimum basin (lake/ocean). Stop.
+			if nextNode == null || bestScore <= 0.0:
+				break
+				
+			to = nextNode
+			
+		# 3. APPLY RIVER DATA & STEP FORWARD
+		from.set_river(true)
+		to.set_river(true)
+		
+		# Reverse relationship assignment: 'to' gets its water FROM 'from'
+		to.set_river_from(from)
+		from.add_river_to(to)
+		
+		# Shift references for the next tile iteration
+		previous = from
+		from = to
+
+func createRiverDrain(gradientField : Image, start : CentroidNodeCustom = null, length = 10) -> void :
+	var validNode : Dictionary = getPotValidRiverNode()
+	if !start :
+		start = validNode["end"][randy.randi_range(0, validNode["end"].size()) -1]
+	var level : int = 0
+	var from : CentroidNodeCustom = start
+	var to : CentroidNodeCustom 
+	for i in length :
+		if from.get_river_from() :
+			break
+		elif TRANSITION_NODE.has(from.get_terrain_code()) :
+			prints(from, "trigger")
+			var lastNodeIdx : int = from.get_neighbour().find(from.get_river_to()[-1])
+			var nextNodeIdx = lastNodeIdx - 2
+			if VALID_RIVER_NODE[level + 1].has(from.get_neighbour()[nextNodeIdx].getCentroidCode()) :
+				to = from.get_neighbour()[nextNodeIdx]
+				level += 1
+			else :
+				prints(from.get_neighbour()[nextNodeIdx], "cut")
+				break
+		else :
+			var neighborScore : Array[float] = []
+			var neighbors : Array[GraphNodeCustom] = from.get_neighbour()
+			var fromDir : Vector2 = getGradientDir(from, gradientField)
+			if fromDir.length() < 0.01:
+				break 
+			for j in neighbors :
+				var temp2d := Vector2((j.get_position() - from.get_position()).x, (j.get_position() - from.get_position()).z)
+				var score : float = fromDir.normalized().dot(temp2d.normalized())
+				neighborScore.append(score)
+			var bestScore : float = -INF
+			for jj in neighborScore.size() :
+				if !VALID_RIVER_NODE[level].has(neighbors[jj].getCentroidCode()) || neighbors[jj].is_river() || !validNextRiverNode(from, neighbors[jj]):
+					continue
+				if neighborScore[jj] > bestScore :
+					bestScore = neighborScore[jj]
+					to = neighbors[jj]
+			if bestScore == -INF :
+				to = null
+		if !to :
+			break
+		from.set_river_from(to)
+		to.add_river_to(from)
+		from = to
+
+func validNextRiverNode(from : CentroidNodeCustom, to : CentroidNodeCustom) -> bool :
+	var toIdx = from.get_neighbour().find(to)
+	var nextNodeVer1 : int = toIdx
+	var nextNodeVer2 : int = (toIdx + 1) % 4 
+	return from.get_verticies()[nextNodeVer1].get_type() == from.get_verticies()[nextNodeVer2].get_type()
+
+func getGradientDir(node : CentroidNodeCustom, gradientField : Image) -> Vector2 :
+	var halfGridSize : float = gridSize * gridSpacing
+	var pos : Vector3 = node.get_position()
+	var sampleX : int = clampi(roundi(remap(pos.x, -halfGridSize, halfGridSize, 0, gradientField.get_width())), 0, gradientField.get_width() - 1)
+	var sampleY : int = clampi(roundi(remap(pos.z, -halfGridSize, halfGridSize, 0, gradientField.get_height())), 0, gradientField.get_height() -1)
+	var samplerResult : Color = gradientField.get_pixel(sampleX, sampleY)
+	var dirX : float = samplerResult.r * 2.0 - 1.0
+	var dirY : float = samplerResult.g * 2.0 - 1.0
+	return Vector2(dirX, dirY) 
+
+#endregion

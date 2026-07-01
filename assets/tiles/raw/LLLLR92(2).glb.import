@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/LLLLR92(2).glb-83385869666d16f35a4741771b6d2d
 
 nodes/root_type=""
 nodes/root_name=""
-nodes/root_script=Resource("uid://b0778dawee5tk", "res://script/MeshDistortionTool.gd")
+nodes/root_script=null
 nodes/apply_root_scale=true
 nodes/root_scale=1.0
 nodes/import_as_skeleton_bones=false

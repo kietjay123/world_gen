@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://bxk3faagtkoew"]
+
+[ext_resource type="PackedScene" uid="uid://dvusohhw6ls0" path="res://assets/test/testW.glb" id="1_plx4d"]
+
+[node name="testW" unique_id=2134720963 instance=ExtResource("1_plx4d")]
+
+[node name="model_0_050" parent="." index="0" unique_id=1569650883]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 40, 0)

@@ -1,115 +1,242 @@
 @tool
 class_name TileDataRes extends Resource
 
-@export_tool_button("UpdateLookUpTable", "Callable") var ulut = updateTable
+@export_tool_button("UpdateLookUpTable") var ulut = updateTable
+@export_tool_button("PrintCode") var pc = getTypeCode
 
 @export var meshNameLookUp : Dictionary = {
 	"WWWW" : {
 		"names" : [
 			"wwww(1)"
-		]
+		],
+		"mirror" : false,
 	},
 	"LLLL" : {
 		"names" : [
 			"llll(1)"
-		]
+		],
+		"mirror" : false,
 	},
 	"MMMM" : {
 		"names" : [
 			"mmmm(1)"
-		]
+		],
+		"mirror" : false,
 	},
 	"LLWL" : {
 		"names" : [
 			"llwl(1)",
 			"llwl(2)"
-		]
+		],
+		"mirror" : false,
 	},
 	"LLMW" : {
 		"names" : [
 			"llwm(1)",
-		]
+		],
+		"mirror" : true,
 	},
 	"LLWW" : {
 		"names" : [
 			"llww(1)",
 			"llww(2)",
 			"llww(3)"
-		]
+		],
+		"mirror" : false,
 	},
 	"LMMW" : {
 		"names" : [
 			"lmmw(1)",
-		]
+		],
+		"mirror" : true,
 	},
 	"LMWW" : {
 		"names" : [
 			"lmww(1)",
-		]
+		],
+		"mirror" : true,
 	},
 	"LWLW" : {
 		"names" : [
 			"lwlw(1)",
 			"lwlw(2)"
-		]
+		],
+		"mirror" : false,
 	},
 	"LWWW" : {
 		"names" : [
 			"lwww(1)",
-			"Lwww(2)",
-			"Lwww(3)"
-		]
+			"lwww(2)",
+			"lwww(3)"
+		],
+		"mirror" : false,
 	},
 	"MLLL" : {
 		"names" : [
 			"mlll(1)",
 			"mlll(2)",
 			"mlll(3)"
-		]
+		],
+		"mirror" : false,
 	},
 	"MLML" : {
 		"names" : [
 			"mlml(1)",
 			"mlml(2)"
-		]
+		],
+		"mirror" : false,
 	},
 	"MMLL" : {
 		"names" : [
 			"mmll(1)",
 			"mmll(2)",
 			"mmll(3)"
-		]
+		],
+		"mirror" : false,
 	},
 	"MMLM" : {
 		"names" : [
 			"mmlm(1)",
 			"mmlm(2)"
-		]
+		],
+		"mirror" : false,
 	},
 	"MMWM" : {
 		"names" : [
 			"mmwm(1)",
 			"mmwm(2)"
-		]
+		],
+		"mirror" : false,
 	},
 	"MMWW" : {
 		"names" : [
 			"mmww(1)",
 			"mmww(2)"
-		]
+		],
+		"mirror" : false,
 	},
 	"MWMW" : {
 		"names" : [
 			"mwmw(1)",
 			"mwmw(2)"
-		]
+		],
+		"mirror" : false,
 	},
 	"MWWW" : {
 		"names" : [
 			"mwww(1)",
 			"mwww(2)"
-		]
+		],
+		"mirror" : false,
 	},
+	"LLLL/0020" : {
+		"names" : [
+			"llllr_5(1)",
+		],
+		"mirror" : false,
+	},
+	"LLLL/1020" : {
+		"names" : [
+			"llllr_92(1)",
+			"llllr_92(2)",
+		],
+		"mirror" : false,
+	},
+	"LLLL/1200" : {
+		"names" : [
+			"llllr_96(1)",
+			"llllr_96(2)",
+		],
+		"mirror" : true,
+	},
+	"LLLL/1220" : {
+		"names" : [
+			"llllr_926(1)",
+			"llllr_926(2)",
+		],
+		"mirror" : true,
+	},
+	"LLWW/1000" : {
+		"names" : [
+			"llwwr_92(1)",
+		],
+		"mirror" : false,
+	},
+	"MMMM/0020" : {
+		"names" : [
+			"mmmmr_5(1)",
+		],
+		"mirror" : false,
+	},
+	"MMMM/1020" : {
+		"names" : [
+			"mmmmr_92(1)",
+			"mmmmr_92(2)",
+		],
+		"mirror" : false,
+	},
+	"MMMM/1200" : {
+		"names" : [
+			"mmmmr_96(1)",
+			"mmmmr_96(2)",
+		],
+		"mirror" : true,
+	},
+	"MMMM/1220" : {
+		"names" : [
+			"mmmmr_926(1)",
+			"mmmmr_926(2)",
+		],
+		"mirror" : true,
+	},
+	"MMLL/1020" : {
+		"names" : [
+			"mmllr_92(1)",
+		],
+		"mirror" : false,
+	},
+	"MMLL/0020" : {
+		"names" : [
+			"mmllr_5(1)",
+		],
+		"mirror" : false,
+	},
+	"MMWW/1020" : {
+		"names" : [
+			"mmwwr_92(1)",
+		],
+		"mirror" : false,
+	},
+	"LLLL/1202" : {
+		"names" : [
+			"mmwwr_92(1)",
+		],
+		"mirror" : false,
+	},
+	"MMMM/1202" : {
+		"names" : [
+			"mmwwr_92(1)",
+		],
+		"mirror" : false,
+	},
+	"LMLW" : {
+		"names" : [
+			"lmlw(1)",
+		],
+		"mirror" : false,
+	},
+	"MLMW" : {
+		"names" : [
+			"mlmw(1)",
+		],
+		"mirror" : false,
+	},
+	"WMWL" : {
+		"names" : [
+			"wmwl(1)",
+		],
+		"mirror" : false,
+	}
 }
 
 @export var lookUptable : Dictionary[int, Dictionary] = {}
@@ -128,6 +255,71 @@ enum TYPE {W, L, M}
 func updateTable() -> void :
 	var final : Dictionary[int, Dictionary] = {}
 	for i : String in meshNameLookUp.keys() :
+		var substr : PackedStringArray = i.split("/")
+		var terrain : String = substr[0]
+		var river : String = substr[1] if substr.size() == 2 else "0000"
+		var path : String = substr[2] if substr.size() == 3 else "0000"
+		var uniqueVariation : Array[String] = []
+		uniqueVariation.append(path + river + terrain)
+		for j in 3 :
+			var temp : String = ""
+			terrain = (terrain.right(1) + terrain).substr(0, 4)
+			if river != "0000" :
+				river = (river.right(1) + river).substr(0, 4)
+			if path != "0000" :
+				path = (path.right(1) + path).substr(0, 4)
+			temp = path + river + terrain
+			if !uniqueVariation.has(temp) :
+				uniqueVariation.append(temp)
+		for jj in uniqueVariation.size() :
+			var baseThreeTerrain : String = ""
+			for kk in uniqueVariation[jj].right(4) :
+				baseThreeTerrain += str(TYPE[kk])
+			var baseTen : int = baseThreeToBaseTen(uniqueVariation[jj].left(-4) + baseThreeTerrain)
+			final[baseTen] = {"type": i, "rotation" : jj, "mirror" : false}
+		
+		if meshNameLookUp[i]["mirror"] == true :
+			terrain = substr[0]
+			river = substr[1] if substr.size() == 2 else "0000"
+			path = substr[2] if substr.size() == 3 else "0000"
+			terrain = mirrorString(terrain)
+			river = mirrorString(river)
+			path = mirrorString(path)
+			uniqueVariation = []
+			uniqueVariation.append(path + river + terrain)
+			for j in 3 :
+				var temp : String = ""
+				terrain = (terrain.right(1) + terrain).substr(0, 4)
+				if river != "0000" :
+					river = (river.right(1) + river).substr(0, 4)
+				if path != "0000" :
+					path = (path.right(1) + path).substr(0, 4)
+				temp = path + river + terrain
+				if !uniqueVariation.has(temp) :
+					uniqueVariation.append(temp)
+			for jj in uniqueVariation.size() :
+				var baseThreeTerrain : String = ""
+				for kk in uniqueVariation[jj].right(4) :
+					baseThreeTerrain += str(TYPE[kk])
+				var baseTen : int = baseThreeToBaseTen(uniqueVariation[jj].left(-4) + baseThreeTerrain)
+				final[baseTen] = {"type": i, "rotation" : jj, "mirror" : true}
+	lookUptable = final
+
+func mirrorString(input : String) -> String :
+	var a = input[1]
+	var b = input[3]
+	input[1] = input[0]
+	input[3] = input[2]
+	input[0] = a
+	input[2] = b
+	return input 
+
+func getTypeCode() -> void :
+	var centroidtype : Array[String] = [
+		"MMMM"
+	]
+	var final : Dictionary[int, Dictionary] = {}
+	for i : String in centroidtype :
 		var temp := i
 		var uniqueVariation : Array[String] = []
 		uniqueVariation.append(temp)
@@ -141,4 +333,4 @@ func updateTable() -> void :
 				baseThreeStr += str(TYPE[kk])
 			var baseTen : int = baseThreeToBaseTen(baseThreeStr)
 			final[baseTen] = {"type": i, "rotation" : jj}
-	lookUptable = final
+	print(final.keys())

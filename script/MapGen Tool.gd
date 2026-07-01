@@ -15,6 +15,8 @@ extends Node
 	set(value):
 		landLevel = value
 
+@export var river : int = 0
+
 @export var samplingMultiplier : float = 1.5
 
 @export_enum("Default") var heightMapMethod: String = "Default"
@@ -39,6 +41,7 @@ var gradientMapTexture : SharedImageUniform
 var levelsUniform : StorageBufferUniform
 
 @export var graph := preload("res://scene/graph_creator.scn")
+@export var addGraphNode : bool = false
 @export var shaderOutputSubviewport := preload("res://scene/shader_output.tscn")
 
 var shaderOutput : ShaderOutput
@@ -129,7 +132,7 @@ func createMap() -> void :
 	for i in get_children() :
 		if i is Camera3D :
 			continue
-		remove_child(i)
+		i.queue_free()
 	
 	shaderOutput = shaderOutputSubviewport.instantiate()
 	add_child(shaderOutput)
@@ -138,12 +141,15 @@ func createMap() -> void :
 	createMaps()
 	
 	var graphNode : Hex = graph.instantiate()
+	if addGraphNode :
+		graphNode.addNodeToTree = true
 	add_child(graphNode)
 	graphNode.owner = get_tree().edited_scene_root
 	graphNode.create(gridSize, userSeed)
 	samplingMesh(graphNode)
+	graphNode.setInsideGridType()
+	
+	for i in river :
+		graphNode.createRiverDrain(await shaderOutput.getOutput("gradientMap"))
 	
 	graphNode.renderMesh()
-	
-	var test := await shaderOutput.getOutput("gradientMap")
-	print(test.get_pixel(6, 0))

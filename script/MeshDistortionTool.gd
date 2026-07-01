@@ -175,7 +175,6 @@ func updateMeshEditor() -> void :
 			mdt.set_vertex(ii, v)
 		mesh.mesh.clear_surfaces()
 		mdt.commit_to_surface(mesh.mesh)
-		print(mesh.mesh.get_aabb())
 
 func updateMeshContructor() -> void :
 	mdt.create_from_surface(mesh.mesh, 0)

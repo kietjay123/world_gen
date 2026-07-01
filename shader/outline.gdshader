@@ -1,6 +1,5 @@
 // Ported from https://roystan.net/articles/outline-shader/ by ERInteractive
 shader_type spatial;
-render_mode unshaded;
 
 uniform float depth_threshold : hint_range(0.0,10.0,0.01) = 0.2f;
 uniform float depth_normal_threshold_scale : hint_range(0.0,10.0,0.01) = 0.2f;

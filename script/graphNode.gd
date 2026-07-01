@@ -38,6 +38,9 @@ func add_neighbour(value: GraphNodeCustom) -> void:
 func remove_neighbour(value: GraphNodeCustom) -> void:
 	neighbour.erase(value)
 
+func clear_neighbor() -> void :
+	neighbour.clear()
+
 func isNeighbor(node : GraphNodeCustom) -> bool :
 	return true if neighbour.has(node) else false
 
