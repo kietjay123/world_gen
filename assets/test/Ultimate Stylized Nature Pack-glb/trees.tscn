@@ -1,5 +1,0 @@
-[gd_scene format=3 uid="uid://d23ukoas8eo1x"]
-
-[ext_resource type="PackedScene" uid="uid://db7sli2a7x3b6" path="res://assets/test/Ultimate Stylized Nature Pack-glb/Trees.glb" id="1_sysfn"]
-
-[node name="Root Scene" unique_id=1492569907 instance=ExtResource("1_sysfn")]

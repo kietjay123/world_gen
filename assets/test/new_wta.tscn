@@ -1,8 +1,0 @@
-[gd_scene format=3 uid="uid://c302b4jdbvxdk"]
-
-[ext_resource type="PackedScene" uid="uid://c78j7t8bount0" path="res://assets/test/new wta.glb" id="1_whv7e"]
-
-[node name="new wta" unique_id=1546956115 instance=ExtResource("1_whv7e")]
-
-[node name="model_0_048" parent="." index="0" unique_id=1488493825]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 40, 0)
