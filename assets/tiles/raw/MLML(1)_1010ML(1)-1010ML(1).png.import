@@ -3,10 +3,9 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bpamhwk0pxqta"
-path.s3tc="res://.godot/imported/MLML(1)_1010ML(1)-1010ML(1).png-e382127b565a7feef5b8bfbec6d3b5a1.s3tc.ctex"
+path="res://.godot/imported/MLML(1)_1010ML(1)-1010ML(1).png-e382127b565a7feef5b8bfbec6d3b5a1.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 generator_parameters={
 "md5": "e2fe24a3d2821bac0c0636beccad2a54"
@@ -15,11 +14,11 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/tiles/raw/MLML(1)_1010ML(1)-1010ML(1).png"
-dest_files=["res://.godot/imported/MLML(1)_1010ML(1)-1010ML(1).png-e382127b565a7feef5b8bfbec6d3b5a1.s3tc.ctex"]
+dest_files=["res://.godot/imported/MLML(1)_1010ML(1)-1010ML(1).png-e382127b565a7feef5b8bfbec6d3b5a1.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=3
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -27,7 +26,7 @@ compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
