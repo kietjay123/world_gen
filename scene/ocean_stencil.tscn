@@ -1,0 +1,48 @@
+[gd_scene format=4 uid="uid://hqqwgvqre12f"]
+
+[ext_resource type="PackedScene" uid="uid://d0k7oy4w14g6k" path="res://assets/test/ocean stencil.glb" id="1_qabd5"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qabd5"]
+resource_name = "0.615686_0.811765_0.929412_0.000000_0.000000"
+cull_mode = 2
+albedo_color = Color(0.80784315, 0.9137255, 0.96862745, 0)
+stencil_mode = 3
+stencil_flags = 2
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_ji6rt"]
+_surfaces = [{
+"aabb": AABB(-1, -7.5710346e-08, -0.8660254, 2, 1e-05, 1.7320508),
+"format": 34896613377,
+"index_count": 12,
+"index_data": PackedByteArray("AAABAAIAAQAAAAMAAgAEAAAABAACAAUA"),
+"name": "0.615686_0.811765_0.929412_0.000000_0.000000",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 6,
+"vertex_data": PackedByteArray("///wAf9/AAD/P+ADAAAAAAAA8AH/fwAA/7/gAwAAAAD/vwAA//8AAP8/AAD//wAA")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_a34kp"]
+resource_name = "ocean stencil_mesh0_mesh"
+_surfaces = [{
+"aabb": AABB(-1, -7.5710346e-08, -0.8660254, 2, 1e-05, 1.7320508),
+"attribute_data": PackedByteArray("////f/8///8AAP9//7////+/AAD/PwAA"),
+"format": 34896613399,
+"index_count": 12,
+"index_data": PackedByteArray("AAABAAIAAQAAAAMAAgAEAAAABAACAAUA"),
+"material": SubResource("StandardMaterial3D_qabd5"),
+"name": "0.615686_0.811765_0.929412_0.000000_0.000000",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 6,
+"vertex_data": PackedByteArray("///wAf9//7//P+ADAAD/vwAA8AH/f/+//7/gAwAA/7//vwAA////v/8/AAD///+/AAD/fwAA/38AAP9/AAD/fwAA/38AAP9/")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_ji6rt")
+
+[node name="ocean stencil" unique_id=1998256216 instance=ExtResource("1_qabd5")]
+
+[node name="Part 1" parent="." index="0" unique_id=1899455953]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("ArrayMesh_a34kp")

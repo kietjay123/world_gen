@@ -26,7 +26,8 @@ class_name TileDataRes extends Resource
 	"LLWL" : {
 		"names" : [
 			"llwl(1)",
-			"llwl(2)"
+			"llwl(2)",
+			"llwl(3)"
 		],
 		"mirror" : false,
 	},
@@ -90,7 +91,8 @@ class_name TileDataRes extends Resource
 		"names" : [
 			"mmll(1)",
 			"mmll(2)",
-			"mmll(3)"
+			"mmll(3)",
+			"mmll(4)"
 		],
 		"mirror" : false,
 	},
@@ -131,91 +133,93 @@ class_name TileDataRes extends Resource
 	},
 	"LLLL/0020" : {
 		"names" : [
-			"llllr_5(1)",
+			"llllr5(1)",
 		],
 		"mirror" : false,
 	},
 	"LLLL/1020" : {
 		"names" : [
-			"llllr_92(1)",
-			"llllr_92(2)",
+			"llllr92(1)",
+			"llllr92(2)",
 		],
 		"mirror" : false,
 	},
 	"LLLL/1200" : {
 		"names" : [
-			"llllr_96(1)",
-			"llllr_96(2)",
+			"llllr96(1)",
+			"llllr96(2)",
 		],
 		"mirror" : true,
 	},
 	"LLLL/1220" : {
 		"names" : [
-			"llllr_926(1)",
-			"llllr_926(2)",
+			"llllr926(1)",
+			"llllr926(2)",
 		],
 		"mirror" : true,
 	},
 	"LLWW/1000" : {
 		"names" : [
-			"llwwr_92(1)",
+			"llwwr92(1)",
+			"llwwr92(2)"
 		],
 		"mirror" : false,
 	},
 	"MMMM/0020" : {
 		"names" : [
-			"mmmmr_5(1)",
+			"mmmmr5(1)",
 		],
 		"mirror" : false,
 	},
 	"MMMM/1020" : {
 		"names" : [
-			"mmmmr_92(1)",
-			"mmmmr_92(2)",
+			"mmmmr92(1)",
+			"mmmmr92(2)",
 		],
 		"mirror" : false,
 	},
 	"MMMM/1200" : {
 		"names" : [
-			"mmmmr_96(1)",
-			"mmmmr_96(2)",
+			"mmmmr96(1)",
+			"mmmmr96(2)",
 		],
 		"mirror" : true,
 	},
 	"MMMM/1220" : {
 		"names" : [
-			"mmmmr_926(1)",
-			"mmmmr_926(2)",
+			"mmmmr926(1)",
+			"mmmmr926(2)",
 		],
 		"mirror" : true,
 	},
 	"MMLL/1020" : {
 		"names" : [
-			"mmllr_92(1)",
+			"mmllr92(1)",
+			"mmllr92(2)"
 		],
 		"mirror" : false,
 	},
 	"MMLL/0020" : {
 		"names" : [
-			"mmllr_5(1)",
+			"mmllr5(1)",
 		],
 		"mirror" : false,
 	},
 	"MMWW/1020" : {
 		"names" : [
-			"mmwwr_92(1)",
+			"mmwwr92(1)",
 		],
 		"mirror" : false,
 	},
 	"LLLL/1202" : {
 		"names" : [
-			"mmwwr_92(1)",
+			"llllr946(1)",
 		],
 		"mirror" : false,
 	},
 	"MMMM/1202" : {
 		"names" : [
-			"mmwwr_92(1)",
+			"mmmmr946(1)",
 		],
 		"mirror" : false,
 	},
@@ -282,9 +286,10 @@ func updateTable() -> void :
 			terrain = substr[0]
 			river = substr[1] if substr.size() == 2 else "0000"
 			path = substr[2] if substr.size() == 3 else "0000"
-			terrain = mirrorString(terrain)
-			river = mirrorString(river)
-			path = mirrorString(path)
+			terrain = mirrorTerrain(terrain)
+			river = mirrorRiver(river)
+			# BUG MAYBe
+			path = mirrorRiver(path)
 			uniqueVariation = []
 			uniqueVariation.append(path + river + terrain)
 			for j in 3 :
@@ -305,13 +310,19 @@ func updateTable() -> void :
 				final[baseTen] = {"type": i, "rotation" : jj, "mirror" : true}
 	lookUptable = final
 
-func mirrorString(input : String) -> String :
+func mirrorTerrain(input : String) -> String :
 	var a = input[1]
 	var b = input[3]
 	input[1] = input[0]
 	input[3] = input[2]
 	input[0] = a
 	input[2] = b
+	return input 
+
+func mirrorRiver(input : String) -> String :
+	var a = input[1]
+	input[1] = input[3]
+	input[3] = a
 	return input 
 
 func getTypeCode() -> void :

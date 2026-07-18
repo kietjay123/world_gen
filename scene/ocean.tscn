@@ -1,0 +1,120 @@
+[gd_scene format=4 uid="uid://2fope7fwabjs"]
+
+[ext_resource type="Shader" uid="uid://bngb5r8rudpf4" path="res://assets/test/ocean tes.gdshader" id="1_0nfae"]
+[ext_resource type="Script" uid="uid://u5ia6jd1xtkp" path="res://script/ocean_init.gd" id="1_o6dn0"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_hqsix"]
+noise_type = 3
+seed = 2
+frequency = 0.011
+fractal_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_3kjtb"]
+noise = SubResource("FastNoiseLite_hqsix")
+seamless = true
+as_normal_map = true
+bump_strength = 1.5
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_wuyp8"]
+noise_type = 3
+seed = 2
+frequency = 0.011
+fractal_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_f2ncn"]
+noise = SubResource("FastNoiseLite_wuyp8")
+seamless = true
+as_normal_map = true
+bump_strength = 1.5
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_mp5dc"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_a8nng"]
+noise = SubResource("FastNoiseLite_mp5dc")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_khhxn"]
+render_priority = 1
+shader = ExtResource("1_0nfae")
+shader_parameter/albedo = Color(0, 0.29411766, 0.44705883, 1)
+shader_parameter/albedo2 = Color(0, 0.5803922, 0.75686276, 1)
+shader_parameter/metallic = 0.0
+shader_parameter/roughness = 0.02
+shader_parameter/wave = SubResource("NoiseTexture2D_a8nng")
+shader_parameter/texture_normal = SubResource("NoiseTexture2D_3kjtb")
+shader_parameter/texture_normal2 = SubResource("NoiseTexture2D_f2ncn")
+shader_parameter/wave_direction = Vector2(0, 1)
+shader_parameter/wave_direction2 = Vector2(0, 1)
+shader_parameter/time_scale = 0.025
+shader_parameter/noise_scale = 10.0
+shader_parameter/height_scale = 1.0
+shader_parameter/color_deep = Color(0.105882354, 0.29411766, 0.32941177, 1)
+shader_parameter/color_shallow = Color(0, 0.5529412, 0.6509804, 1)
+shader_parameter/beers_law = 2.0
+shader_parameter/depth_offset = -0.75
+shader_parameter/edge_scale = 0.1
+shader_parameter/near = 1.0
+shader_parameter/far = 100.0
+shader_parameter/edge_color = Color(1, 1, 1, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_s1fef"]
+material = SubResource("ShaderMaterial_khhxn")
+size = Vector2(750, 750)
+subdivide_width = 750
+subdivide_depth = 750
+center_offset = Vector3(0, 1, 0)
+orientation = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qthat"]
+resource_name = "0.615686_0.811765_0.929412_0.000000_0.000000"
+transparency = 1
+cull_mode = 2
+albedo_color = Color(0.80784315, 0.9137255, 0.96862745, 0)
+stencil_mode = 3
+stencil_flags = 2
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_ji6rt"]
+_surfaces = [{
+"aabb": AABB(-1, -7.5710346e-08, -0.8660254, 2, 1e-05, 1.7320508),
+"format": 34896613377,
+"index_count": 12,
+"index_data": PackedByteArray("AAABAAIAAQAAAAMAAgAEAAAABAACAAUA"),
+"name": "0.615686_0.811765_0.929412_0.000000_0.000000",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 6,
+"vertex_data": PackedByteArray("///wAf9/AAD/P+ADAAAAAAAA8AH/fwAA/7/gAwAAAAD/vwAA//8AAP8/AAD//wAA")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_op4am"]
+resource_name = "ocean stencil_mesh0_mesh"
+_surfaces = [{
+"aabb": AABB(-1, -7.5710346e-08, -0.8660254, 2, 1e-05, 1.7320508),
+"attribute_data": PackedByteArray("////f/8///8AAP9//7////+/AAD/PwAA"),
+"format": 34896613399,
+"index_count": 12,
+"index_data": PackedByteArray("AAABAAIAAQAAAAMAAgAEAAAABAACAAUA"),
+"material": SubResource("StandardMaterial3D_qthat"),
+"name": "0.615686_0.811765_0.929412_0.000000_0.000000",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 6,
+"vertex_data": PackedByteArray("///wAf9//7//P+ADAAD/vwAA8AH/f/+//7/gAwAA/7//vwAA////v/8/AAD///+/AAD/fwAA/38AAP9/AAD/fwAA/38AAP9/")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_ji6rt")
+
+[node name="Ocean" type="Node3D" unique_id=783303494 node_paths=PackedStringArray("mesh", "stencil")]
+script = ExtResource("1_o6dn0")
+mesh = NodePath("MeshInstance3D")
+stencil = NodePath("ocean stencil/Part 1")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=682830293]
+mesh = SubResource("QuadMesh_s1fef")
+
+[node name="ocean stencil" type="Node3D" parent="." unique_id=1998256216]
+
+[node name="Part 1" type="MeshInstance3D" parent="ocean stencil" unique_id=1899455953]
+transform = Transform3D(375, 0, 0, 0, 375, 0, 0, 0, 375, 0, 1, 0)
+mesh = SubResource("ArrayMesh_op4am")

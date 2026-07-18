@@ -1,11 +1,43 @@
-[gd_scene format=3 uid="uid://bp5a4dh6w0b5h"]
+[gd_scene format=3 uid="uid://bacq2y4miey7"]
 
-[ext_resource type="PackedScene" uid="uid://cdkahg1mki0q7" path="res://assets/tiles/raw/MMMM(1).glb" id="1_51end"]
-[ext_resource type="Script" uid="uid://b0778dawee5tk" path="res://script/MeshDistortionTool.gd" id="2_qamll"]
+[ext_resource type="Script" uid="uid://b0778dawee5tk" path="res://script/MeshDistortionTool.gd" id="1_qamll"]
+[ext_resource type="Material" uid="uid://cumx0505k3ghx" path="res://shader/universeTileMat.tres" id="2_68iay"]
 
-[node name="MMMM(1)" unique_id=1970343240 node_paths=PackedStringArray("mesh") instance=ExtResource("1_51end")]
-script = ExtResource("2_qamll")
-mesh = NodePath("model_0_028")
+[sub_resource type="ArrayMesh" id="ArrayMesh_nfeof"]
+_surfaces = [{
+"aabb": AABB(-40, -5, -40, 80, 1e-05, 80),
+"format": 34896613377,
+"index_count": 6,
+"index_data": PackedByteArray(0, 0, 1, 0, 2, 0, 0, 0, 3, 0, 1, 0),
+"name": "M.vox Material",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 4,
+"vertex_data": PackedByteArray(0, 0, 0, 0, 255, 255, 0, 0, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 0, 0, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+}]
+blend_shape_mode = 0
 
-[node name="model_0_028" parent="." index="0" unique_id=1914918539]
+[sub_resource type="ArrayMesh" id="ArrayMesh_y1ldm"]
+resource_name = "tiles asset final_mesh_0_080"
+_surfaces = [{
+"aabb": AABB(-40, -5, -40, 80, 1e-05, 80),
+"attribute_data": PackedByteArray(90, 116, 12, 255, 0, 0, 255, 255, 90, 116, 12, 255, 255, 255, 0, 0, 90, 116, 12, 255, 255, 255, 255, 255, 90, 116, 12, 255, 0, 0, 0, 0),
+"format": 34896613407,
+"index_count": 6,
+"index_data": PackedByteArray(0, 0, 1, 0, 2, 0, 0, 0, 3, 0, 1, 0),
+"material": ExtResource("2_68iay"),
+"name": "M.vox Material",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 4,
+"vertex_data": PackedByteArray(0, 0, 0, 0, 255, 255, 255, 191, 255, 255, 0, 0, 0, 0, 255, 191, 255, 255, 0, 0, 255, 255, 255, 191, 0, 0, 0, 0, 0, 0, 255, 191, 255, 255, 255, 127, 255, 255, 255, 127, 255, 255, 255, 127, 255, 255, 255, 127)
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_nfeof")
+
+[node name="MMMM(1)" type="Node3D" unique_id=398897878]
+script = ExtResource("1_qamll")
+
+[node name="model_0_066" type="MeshInstance3D" parent="." unique_id=560536099]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 40, 0)
+mesh = SubResource("ArrayMesh_y1ldm")

@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://n37wl83fsbx3"]
+
+[ext_resource type="Script" uid="uid://b0778dawee5tk" path="res://script/MeshDistortionTool.gd" id="1_4udac"]
+[ext_resource type="Material" uid="uid://cumx0505k3ghx" path="res://shader/universeTileMat.tres" id="2_t5ybc"]
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_4ri38"]
+_surfaces = [{
+"aabb": AABB(-40, -35, -40, 80, 1e-05, 80),
+"format": 34896613377,
+"index_count": 6,
+"index_data": PackedByteArray(0, 0, 1, 0, 2, 0, 0, 0, 3, 0, 1, 0),
+"name": "L.vox Material",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 4,
+"vertex_data": PackedByteArray(0, 0, 0, 0, 255, 255, 0, 0, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 0, 0, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_e7yxl"]
+resource_name = "tiles asset final_mesh_0_052"
+_surfaces = [{
+"aabb": AABB(-40, -35, -40, 80, 1e-05, 80),
+"attribute_data": PackedByteArray(26, 51, 8, 255, 0, 0, 255, 255, 26, 51, 8, 255, 255, 255, 0, 0, 26, 51, 8, 255, 255, 255, 255, 255, 26, 51, 8, 255, 0, 0, 0, 0),
+"format": 34896613407,
+"index_count": 6,
+"index_data": PackedByteArray(0, 0, 1, 0, 2, 0, 0, 0, 3, 0, 1, 0),
+"material": ExtResource("2_t5ybc"),
+"name": "L.vox Material",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 4,
+"vertex_data": PackedByteArray(0, 0, 0, 0, 255, 255, 255, 191, 255, 255, 0, 0, 0, 0, 255, 191, 255, 255, 0, 0, 255, 255, 255, 191, 0, 0, 0, 0, 0, 0, 255, 191, 255, 255, 255, 127, 255, 255, 255, 127, 255, 255, 255, 127, 255, 255, 255, 127)
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_4ri38")
+
+[node name="LLLL(1)" type="Node3D" unique_id=1274063907 node_paths=PackedStringArray("mesh")]
+script = ExtResource("1_4udac")
+mesh = NodePath("model_0_039")
+
+[node name="model_0_039" type="MeshInstance3D" parent="." unique_id=1878945375]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 40, 0)
+mesh = SubResource("ArrayMesh_e7yxl")

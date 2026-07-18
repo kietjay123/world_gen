@@ -4,4 +4,771 @@
 
 [resource]
 script = ExtResource("1_tyoaa")
+lookUptable = Dictionary[int, Dictionary]({
+0: {
+"mirror": false,
+"rotation": 0,
+"type": "WWWW"
+},
+1: {
+"mirror": false,
+"rotation": 3,
+"type": "LWWW"
+},
+2: {
+"mirror": false,
+"rotation": 3,
+"type": "MWWW"
+},
+3: {
+"mirror": false,
+"rotation": 2,
+"type": "LWWW"
+},
+4: {
+"mirror": false,
+"rotation": 2,
+"type": "LLWW"
+},
+5: {
+"mirror": false,
+"rotation": 2,
+"type": "LMWW"
+},
+6: {
+"mirror": false,
+"rotation": 2,
+"type": "MWWW"
+},
+7: {
+"mirror": true,
+"rotation": 2,
+"type": "LMWW"
+},
+8: {
+"mirror": false,
+"rotation": 2,
+"type": "MMWW"
+},
+9: {
+"mirror": false,
+"rotation": 1,
+"type": "LWWW"
+},
+10: {
+"mirror": false,
+"rotation": 1,
+"type": "LWLW"
+},
+11: {
+"mirror": false,
+"rotation": 2,
+"type": "WMWL"
+},
+12: {
+"mirror": false,
+"rotation": 1,
+"type": "LLWW"
+},
+13: {
+"mirror": false,
+"rotation": 2,
+"type": "LLWL"
+},
+14: {
+"mirror": false,
+"rotation": 1,
+"type": "LLMW"
+},
+15: {
+"mirror": false,
+"rotation": 1,
+"type": "LMWW"
+},
+16: {
+"mirror": false,
+"rotation": 1,
+"type": "LMLW"
+},
+17: {
+"mirror": false,
+"rotation": 1,
+"type": "LMMW"
+},
+18: {
+"mirror": false,
+"rotation": 1,
+"type": "MWWW"
+},
+19: {
+"mirror": false,
+"rotation": 0,
+"type": "WMWL"
+},
+20: {
+"mirror": false,
+"rotation": 1,
+"type": "MWMW"
+},
+21: {
+"mirror": true,
+"rotation": 1,
+"type": "LMWW"
+},
+22: {
+"mirror": true,
+"rotation": 2,
+"type": "LLMW"
+},
+23: {
+"mirror": false,
+"rotation": 1,
+"type": "MLMW"
+},
+24: {
+"mirror": false,
+"rotation": 1,
+"type": "MMWW"
+},
+25: {
+"mirror": true,
+"rotation": 2,
+"type": "LMMW"
+},
+26: {
+"mirror": false,
+"rotation": 2,
+"type": "MMWM"
+},
+27: {
+"mirror": false,
+"rotation": 0,
+"type": "LWWW"
+},
+28: {
+"mirror": false,
+"rotation": 3,
+"type": "LLWW"
+},
+29: {
+"mirror": true,
+"rotation": 3,
+"type": "LMWW"
+},
+30: {
+"mirror": false,
+"rotation": 0,
+"type": "LWLW"
+},
+31: {
+"mirror": false,
+"rotation": 3,
+"type": "LLWL"
+},
+32: {
+"mirror": false,
+"rotation": 2,
+"type": "LMLW"
+},
+33: {
+"mirror": false,
+"rotation": 1,
+"type": "WMWL"
+},
+34: {
+"mirror": true,
+"rotation": 3,
+"type": "LLMW"
+},
+35: {
+"mirror": true,
+"rotation": 3,
+"type": "LMMW"
+},
+36: {
+"mirror": false,
+"rotation": 0,
+"type": "LLWW"
+},
+37: {
+"mirror": false,
+"rotation": 0,
+"type": "LLWL"
+},
+38: {
+"mirror": true,
+"rotation": 0,
+"type": "LLMW"
+},
+39: {
+"mirror": false,
+"rotation": 1,
+"type": "LLWL"
+},
+40: {
+"mirror": false,
+"rotation": 0,
+"type": "LLLL"
+},
+41: {
+"mirror": false,
+"rotation": 3,
+"type": "MLLL"
+},
+42: {
+"mirror": false,
+"rotation": 0,
+"type": "LLMW"
+},
+43: {
+"mirror": false,
+"rotation": 2,
+"type": "MLLL"
+},
+44: {
+"mirror": false,
+"rotation": 2,
+"type": "MMLL"
+},
+45: {
+"mirror": false,
+"rotation": 0,
+"type": "LMWW"
+},
+46: {
+"mirror": false,
+"rotation": 3,
+"type": "LLMW"
+},
+47: {
+"mirror": false,
+"rotation": 3,
+"type": "MLMW"
+},
+48: {
+"mirror": false,
+"rotation": 0,
+"type": "LMLW"
+},
+49: {
+"mirror": false,
+"rotation": 1,
+"type": "MLLL"
+},
+50: {
+"mirror": false,
+"rotation": 1,
+"type": "MLML"
+},
+51: {
+"mirror": false,
+"rotation": 0,
+"type": "LMMW"
+},
+52: {
+"mirror": false,
+"rotation": 1,
+"type": "MMLL"
+},
+53: {
+"mirror": false,
+"rotation": 2,
+"type": "MMLM"
+},
+54: {
+"mirror": false,
+"rotation": 0,
+"type": "MWWW"
+},
+55: {
+"mirror": false,
+"rotation": 3,
+"type": "LMWW"
+},
+56: {
+"mirror": false,
+"rotation": 3,
+"type": "MMWW"
+},
+57: {
+"mirror": false,
+"rotation": 3,
+"type": "WMWL"
+},
+58: {
+"mirror": false,
+"rotation": 2,
+"type": "LLMW"
+},
+59: {
+"mirror": false,
+"rotation": 2,
+"type": "LMMW"
+},
+60: {
+"mirror": false,
+"rotation": 0,
+"type": "MWMW"
+},
+61: {
+"mirror": false,
+"rotation": 2,
+"type": "MLMW"
+},
+62: {
+"mirror": false,
+"rotation": 3,
+"type": "MMWM"
+},
+63: {
+"mirror": true,
+"rotation": 0,
+"type": "LMWW"
+},
+64: {
+"mirror": false,
+"rotation": 3,
+"type": "LMLW"
+},
+65: {
+"mirror": true,
+"rotation": 0,
+"type": "LMMW"
+},
+66: {
+"mirror": true,
+"rotation": 1,
+"type": "LLMW"
+},
+67: {
+"mirror": false,
+"rotation": 0,
+"type": "MLLL"
+},
+68: {
+"mirror": false,
+"rotation": 3,
+"type": "MMLL"
+},
+69: {
+"mirror": false,
+"rotation": 0,
+"type": "MLMW"
+},
+70: {
+"mirror": false,
+"rotation": 0,
+"type": "MLML"
+},
+71: {
+"mirror": false,
+"rotation": 3,
+"type": "MMLM"
+},
+72: {
+"mirror": false,
+"rotation": 0,
+"type": "MMWW"
+},
+73: {
+"mirror": false,
+"rotation": 3,
+"type": "LMMW"
+},
+74: {
+"mirror": false,
+"rotation": 0,
+"type": "MMWM"
+},
+75: {
+"mirror": true,
+"rotation": 1,
+"type": "LMMW"
+},
+76: {
+"mirror": false,
+"rotation": 0,
+"type": "MMLL"
+},
+77: {
+"mirror": false,
+"rotation": 0,
+"type": "MMLM"
+},
+78: {
+"mirror": false,
+"rotation": 1,
+"type": "MMWM"
+},
+79: {
+"mirror": false,
+"rotation": 1,
+"type": "MMLM"
+},
+80: {
+"mirror": false,
+"rotation": 0,
+"type": "MMMM"
+},
+109: {
+"mirror": false,
+"rotation": 3,
+"type": "LLWW/1000"
+},
+202: {
+"mirror": false,
+"rotation": 1,
+"type": "LLLL/0020"
+},
+214: {
+"mirror": false,
+"rotation": 1,
+"type": "MMLL/0020"
+},
+242: {
+"mirror": false,
+"rotation": 1,
+"type": "MMMM/0020"
+},
+247: {
+"mirror": false,
+"rotation": 2,
+"type": "LLWW/1000"
+},
+445: {
+"mirror": false,
+"rotation": 2,
+"type": "LLLL/1200"
+},
+485: {
+"mirror": false,
+"rotation": 2,
+"type": "MMMM/1200"
+},
+526: {
+"mirror": false,
+"rotation": 0,
+"type": "LLLL/0020"
+},
+562: {
+"mirror": false,
+"rotation": 0,
+"type": "MMLL/0020"
+},
+566: {
+"mirror": false,
+"rotation": 0,
+"type": "MMMM/0020"
+},
+607: {
+"mirror": true,
+"rotation": 3,
+"type": "LLLL/1200"
+},
+647: {
+"mirror": true,
+"rotation": 3,
+"type": "MMMM/1200"
+},
+741: {
+"mirror": false,
+"rotation": 1,
+"type": "LLWW/1000"
+},
+915: {
+"mirror": false,
+"rotation": 1,
+"type": "MMWW/1020"
+},
+931: {
+"mirror": false,
+"rotation": 1,
+"type": "LLLL/1020"
+},
+943: {
+"mirror": false,
+"rotation": 1,
+"type": "MMLL/1020"
+},
+971: {
+"mirror": false,
+"rotation": 1,
+"type": "MMMM/1020"
+},
+1255: {
+"mirror": false,
+"rotation": 1,
+"type": "LLLL/1200"
+},
+1295: {
+"mirror": false,
+"rotation": 1,
+"type": "MMMM/1200"
+},
+1417: {
+"mirror": false,
+"rotation": 1,
+"type": "LLLL/1220"
+},
+1457: {
+"mirror": false,
+"rotation": 1,
+"type": "MMMM/1220"
+},
+1498: {
+"mirror": false,
+"rotation": 3,
+"type": "LLLL/0020"
+},
+1526: {
+"mirror": false,
+"rotation": 3,
+"type": "MMLL/0020"
+},
+1538: {
+"mirror": false,
+"rotation": 3,
+"type": "MMMM/0020"
+},
+1579: {
+"mirror": false,
+"rotation": 3,
+"type": "LLLL/1020"
+},
+1595: {
+"mirror": false,
+"rotation": 3,
+"type": "MMWW/1020"
+},
+1607: {
+"mirror": false,
+"rotation": 3,
+"type": "MMLL/1020"
+},
+1619: {
+"mirror": false,
+"rotation": 3,
+"type": "MMMM/1020"
+},
+1741: {
+"mirror": true,
+"rotation": 2,
+"type": "LLLL/1200"
+},
+1781: {
+"mirror": true,
+"rotation": 2,
+"type": "MMMM/1200"
+},
+1903: {
+"mirror": false,
+"rotation": 2,
+"type": "LLLL/1202"
+},
+1943: {
+"mirror": false,
+"rotation": 2,
+"type": "MMMM/1202"
+},
+2065: {
+"mirror": true,
+"rotation": 3,
+"type": "LLLL/1220"
+},
+2105: {
+"mirror": true,
+"rotation": 3,
+"type": "MMMM/1220"
+},
+2223: {
+"mirror": false,
+"rotation": 0,
+"type": "LLWW/1000"
+},
+2389: {
+"mirror": true,
+"rotation": 0,
+"type": "LLLL/1200"
+},
+2429: {
+"mirror": true,
+"rotation": 0,
+"type": "MMMM/1200"
+},
+2713: {
+"mirror": false,
+"rotation": 0,
+"type": "LLLL/1020"
+},
+2745: {
+"mirror": false,
+"rotation": 0,
+"type": "MMWW/1020"
+},
+2749: {
+"mirror": false,
+"rotation": 0,
+"type": "MMLL/1020"
+},
+2753: {
+"mirror": false,
+"rotation": 0,
+"type": "MMMM/1020"
+},
+2875: {
+"mirror": true,
+"rotation": 0,
+"type": "LLLL/1220"
+},
+2915: {
+"mirror": true,
+"rotation": 0,
+"type": "MMMM/1220"
+},
+3685: {
+"mirror": false,
+"rotation": 0,
+"type": "LLLL/1200"
+},
+3725: {
+"mirror": false,
+"rotation": 0,
+"type": "MMMM/1200"
+},
+3847: {
+"mirror": false,
+"rotation": 0,
+"type": "LLLL/1202"
+},
+3887: {
+"mirror": false,
+"rotation": 0,
+"type": "MMMM/1202"
+},
+4171: {
+"mirror": false,
+"rotation": 0,
+"type": "LLLL/1220"
+},
+4211: {
+"mirror": false,
+"rotation": 0,
+"type": "MMMM/1220"
+},
+4414: {
+"mirror": false,
+"rotation": 2,
+"type": "LLLL/0020"
+},
+4418: {
+"mirror": false,
+"rotation": 2,
+"type": "MMLL/0020"
+},
+4454: {
+"mirror": false,
+"rotation": 2,
+"type": "MMMM/0020"
+},
+4495: {
+"mirror": false,
+"rotation": 3,
+"type": "LLLL/1200"
+},
+4535: {
+"mirror": false,
+"rotation": 3,
+"type": "MMMM/1200"
+},
+4625: {
+"mirror": false,
+"rotation": 2,
+"type": "MMWW/1020"
+},
+4657: {
+"mirror": false,
+"rotation": 2,
+"type": "LLLL/1020"
+},
+4661: {
+"mirror": false,
+"rotation": 2,
+"type": "MMLL/1020"
+},
+4697: {
+"mirror": false,
+"rotation": 2,
+"type": "MMMM/1020"
+},
+4819: {
+"mirror": false,
+"rotation": 2,
+"type": "LLLL/1220"
+},
+4859: {
+"mirror": false,
+"rotation": 2,
+"type": "MMMM/1220"
+},
+4981: {
+"mirror": false,
+"rotation": 3,
+"type": "LLLL/1202"
+},
+5021: {
+"mirror": false,
+"rotation": 3,
+"type": "MMMM/1202"
+},
+5143: {
+"mirror": true,
+"rotation": 1,
+"type": "LLLL/1200"
+},
+5183: {
+"mirror": true,
+"rotation": 1,
+"type": "MMMM/1200"
+},
+5305: {
+"mirror": true,
+"rotation": 1,
+"type": "LLLL/1220"
+},
+5345: {
+"mirror": true,
+"rotation": 1,
+"type": "MMMM/1220"
+},
+5629: {
+"mirror": false,
+"rotation": 1,
+"type": "LLLL/1202"
+},
+5669: {
+"mirror": false,
+"rotation": 1,
+"type": "MMMM/1202"
+},
+5953: {
+"mirror": false,
+"rotation": 3,
+"type": "LLLL/1220"
+},
+5993: {
+"mirror": false,
+"rotation": 3,
+"type": "MMMM/1220"
+},
+6115: {
+"mirror": true,
+"rotation": 2,
+"type": "LLLL/1220"
+},
+6155: {
+"mirror": true,
+"rotation": 2,
+"type": "MMMM/1220"
+}
+})
 metadata/_custom_type_script = "uid://4clsl1h1cq84"

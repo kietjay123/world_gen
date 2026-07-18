@@ -1,14 +1,15 @@
 shader_type spatial;
-render_mode depth_draw_always;
+render_mode depth_draw_always, cull_disabled;
+
 // Water Color
-uniform vec4 color : source_color;
-uniform vec4 deep_water: source_color;
+uniform vec4 color : source_color = vec4(0.36, 0.66, 1.0, 1.0);
+uniform vec4 deep_water: source_color = vec4(0.0, 0.33, 0.69, 1.0);
 
 uniform float roughness : hint_range(0.0, 1.0) = 0.1;
 uniform float metallic : hint_range(0.0, 1.0) = 0;
 
 // Water Speed
-uniform float speed: hint_range(-1, 1) = 0.02;
+uniform float speed: hint_range(-1, 1) = 0.1;
 uniform vec2 dir = vec2(1.0, 1.0);
 
 uniform sampler2D DEPTH_TEXTURE : hint_depth_texture, filter_linear_mipmap;
@@ -18,13 +19,16 @@ uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
 uniform float beer_law_factor = 2.0;
 
 // Water foam 
-uniform vec4 edge_color: source_color;
-uniform float edge_scale = 0.5; // Represents literal meters now
+uniform vec4 edge_color: source_color = vec4(1.0, 1.0, 1.0, 1.0);
+uniform float edge_scale = 1.0; // Represents literal meters now
 
 // Water Wave 
 uniform float time_scale : hint_range(0.0, 0.2, 0.005) = 0.025;
 uniform float height_scale = 0.15;
 uniform float noise_scale = 10.0;
+
+// Water Tiling / UV Scale
+uniform float uv_scale : hint_range(0.01, 10.0) = 1.0; // Higher = smaller texture, Lower = larger texture
 
 // Water Noise
 uniform sampler2D noise1 : repeat_enable;
@@ -65,7 +69,9 @@ vec3 sample_triplanar_normal(sampler2D tex, vec3 packed_pos, vec3 blend, vec3 ba
 
 void vertex() {
 	world_pos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
-	height = texture(wave, world_pos.xz / noise_scale + TIME * time_scale).r;
+	
+	// Scaled the world coordinates for the displacement wave
+	height = texture(wave, (world_pos.xz * uv_scale) / noise_scale + TIME * time_scale).r;
 	VERTEX.y += height * height_scale;
 }
 
@@ -80,9 +86,12 @@ void fragment() {
 	vec3 blend = abs(w_normal);
 	blend /= (blend.x + blend.y + blend.z);
 
-	vec3 tri_pos_n1 = (world_pos / noise_scale) + flow;
-	vec3 tri_pos_n2 = (world_pos / noise_scale) + flow_n2; 
-	vec3 tri_pos_normal = ((world_pos / noise_scale) * 4.0) + (flow * 4.0);
+	// Apply uv_scale directly to the world position before triplanar division
+	vec3 scaled_world_pos = world_pos * uv_scale;
+
+	vec3 tri_pos_n1 = (scaled_world_pos / noise_scale) + flow;
+	vec3 tri_pos_n2 = (scaled_world_pos / noise_scale) + flow_n2; 
+	vec3 tri_pos_normal = ((scaled_world_pos / noise_scale) * 4.0) + (flow * 4.0);
 
 	vec3 n1 = sample_triplanar(noise1, tri_pos_n1, blend).rgb;
 	vec3 n2 = sample_triplanar(noise2, tri_pos_n2, blend).rgb;
@@ -93,10 +102,12 @@ void fragment() {
 	vec3 ndc = vec3(SCREEN_UV * 2.0 - 1.0, depth_raw);
 	vec4 view_pos = INV_PROJECTION_MATRIX * vec4(ndc, 1.0);
 	view_pos.xyz /= view_pos.w;
+	
+	vec3 scene_world = (INV_VIEW_MATRIX * vec4(view_pos.xyz,1.0)).xyz;
 
 	float scene_depth = -view_pos.z;
 	float vertex_depth = -VERTEX.z;
-	float diff = scene_depth - vertex_depth; // Absolute real distance to ground floor
+	float diff = scene_depth - vertex_depth;
 
 	// --- FIXED: BEER'S LAW DEPTH FADE ---
 	float beer_fade = clamp(exp(-diff * beer_law_factor), 0.0, 1.0);
@@ -106,17 +117,12 @@ void fragment() {
 	vec2 displacement = vec2(sum * 0.01);
 	vec4 alpha = texture(SCREEN_TEXTURE, SCREEN_UV + displacement);
 
-	// --- FIXED: FOAM MASK USING TRUE DISTANCE CONTEXT ---
-	float foam_diff = diff + (displacement.x * 0.3); 
-	float foam_mask = 1.0 - clamp(foam_diff / edge_scale, 0.0, 1.0);
-
 	// Calculate Fresnel
 	float fresnel_factor = fresnel(2.0, NORMAL, VIEW);
 	vec4 surface_color = mix(color, deep_water, fresnel_factor);
 
-	// --- FIXED: CLEAN COLOR BLENDING WITHOUT HUE-SHIFT MULTIPLICATION ---
 	vec3 base_water_rgb = mix(gradientcolor.rgb, surface_color.rgb, fresnel_factor);
-	vec3 final_water_rgb = mix(base_water_rgb, edge_color.rgb, foam_mask);
+	vec3 final_water_rgb = base_water_rgb;
 
 	// Procedural 3D peaks
 	float fin = 0.0;
@@ -125,7 +131,7 @@ void fragment() {
 	if (sum > 0.8) fin = 1.0;
 
 	// Blend water color with underlying screen background based on opacity
-	float total_alpha = clamp(gradientcolor.a + foam_mask, 0.0, 1.0);
+	float total_alpha = clamp(gradientcolor.a, 0.0, 1.0);
 	ALBEDO = vec3(fin) + mix(alpha.rgb, final_water_rgb, total_alpha);
 
 	// Compute stable world normal mappings
