@@ -381,10 +381,16 @@ func applyRiverDir() -> void :
 				get_child(2).mesh.surface_get_material(0).set_shader_parameter("dir", dirTo2_2d)
 		#may be redo this
 		else :
-			var dirTo2 := neighbor[0].get_position() - centroidNode.get_position()
+			var dirTo2 := neighbor[idx[0]].get_position() - centroidNode.get_position()
 			var dirTo2_2d := Vector2(dirTo2.x * -1, dirTo2.z)
-			get_child(3).mesh.surface_get_material(0).set_shader_parameter("dir", dirTo2_2d)
 			
-			var dirTo3 := neighbor[1].get_position() - centroidNode.get_position()
+			
+			var dirTo3 := neighbor[idx[1]].get_position() - centroidNode.get_position()
 			var dirTo3_2d := Vector2(dirTo3.x * -1, dirTo3.z)
-			get_child(2).mesh.surface_get_material(0).set_shader_parameter("dir", dirTo3_2d)
+			
+			if idx == [1, 3] :
+				get_child(3).mesh.surface_get_material(0).set_shader_parameter("dir", dirTo2_2d)
+				get_child(2).mesh.surface_get_material(0).set_shader_parameter("dir", dirTo3_2d)
+			else :
+				get_child(2).mesh.surface_get_material(0).set_shader_parameter("dir", dirTo2_2d)
+				get_child(3).mesh.surface_get_material(0).set_shader_parameter("dir", dirTo3_2d)

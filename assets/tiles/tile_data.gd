@@ -240,6 +240,66 @@ class_name TileDataRes extends Resource
 			"wmwl(1)",
 		],
 		"mirror" : false,
+	},
+	"LLLL/0000/1010" : {
+		"names" : [
+			"llllp92(1)",
+		],
+		"mirror" : false,
+	},
+	"LLLL/0000/1100" : {
+		"names" : [
+			"llllp96(1)",
+		],
+		"mirror" : false,
+	},
+	"LLLL/0000/1110" : {
+		"names" : [
+			"llllp962(1)",
+		],
+		"mirror" : false,
+	},
+	"LLLL/0000/1111" : {
+		"names" : [
+			"llllp9624(1)",
+		],
+		"mirror" : false,
+	},
+	"LLLL/0000/1000" : {
+		"names" : [
+			"llllp9(1)",
+		],
+		"mirror" : false,
+	},
+	"LLLL/1020/0011" : {
+		"names" : [
+			"llllp24r96(1)",
+		],
+		"mirror" : true,
+	},
+	"LLLL/0020/0101" : {
+		"names" : [
+			"llllp64r5(1)",
+		],
+		"mirror" : false,
+	},
+	"LLLL/1020/0101" : {
+		"names" : [
+			"llllp64r92(1)",
+		],
+		"mirror" : false,
+	},
+	"LLLL/0020/1100" : {
+		"names" : [
+			"llllp96r5(1)",
+		],
+		"mirror" : true,
+	},
+	"LLLL/0020/1101" : {
+		"names" : [
+			"llllp964r5(1)",
+		],
+		"mirror" : false,
 	}
 }
 

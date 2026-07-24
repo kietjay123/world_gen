@@ -33,12 +33,12 @@ bump_strength = 3.0
 [resource]
 render_priority = 0
 shader = ExtResource("1_geh3w")
-shader_parameter/color = Color(0.36078432, 0.65882355, 1, 0.30980393)
-shader_parameter/deep_water = Color(0, 0.32941177, 0.6901961, 0.5058824)
+shader_parameter/color = Color(0.36078432, 0.65882355, 1, 0.4509804)
+shader_parameter/deep_water = Color(0, 0.32941177, 0.6901961, 0.5254902)
 shader_parameter/roughness = 0.1
 shader_parameter/metallic = 0.0
 shader_parameter/speed = 0.05000004987499995
-shader_parameter/dir = Vector2(1, 1)
+shader_parameter/dir = Vector2(10.126503, 34.30362)
 shader_parameter/beer_law_factor = 2.0
 shader_parameter/edge_color = Color(1, 1, 1, 1)
 shader_parameter/edge_scale = 1.0

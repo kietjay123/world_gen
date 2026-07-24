@@ -141,8 +141,6 @@ func createMap() -> void :
 	createMaps()
 	
 	var graphNode : Hex = graph.instantiate()
-	if addGraphNode :
-		graphNode.addNodeToTree = true
 	add_child(graphNode)
 	graphNode.owner = get_tree().edited_scene_root
 	graphNode.create(gridSize, userSeed)
@@ -152,4 +150,9 @@ func createMap() -> void :
 	for i in river :
 		graphNode.createRiverDrain(await shaderOutput.getOutput("gradientMap"))
 	
+	graphNode.cullShortRiver()
+	
+	if addGraphNode :
+		graphNode.addNodeToTree = true
+		graphNode.renderGrid()
 	graphNode.renderMesh()

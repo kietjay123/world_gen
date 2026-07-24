@@ -30,6 +30,8 @@ var randy :=  RandomNumberGenerator.new()
 
 @export var ocean : PackedScene
 
+@export var riverLengthThreshold : int = 5
+
 var mainGrid : Array[GraphNodeCustom] = []
 
 var previousLayer : Array[GraphNodeCustom] = []
@@ -47,6 +49,8 @@ var outermostLayer : Array[GraphNodeCustom] = []
 var insideGrid : Array[CentroidNodeCustom] = [] 
 
 var meshes : Array[Node3D] = []
+
+var riverNodes : Array[CentroidNodeCustom] = []
 
 #region Inital Hex Grid
 func createGrid() -> void :
@@ -374,7 +378,7 @@ func createInsideGrid() -> void:
 			ii.add_neighbour(jjjj)
 	insideGrid.append_array(insideNodes)
 
-func renderGrid() -> void :
+func initGrid() -> void :
 	randy.set_seed(hash(userSeed))
 	mainGrid.clear()
 	insideGrid.clear()
@@ -393,45 +397,39 @@ func renderGrid() -> void :
 	if useRelax :
 		runRelaxForce(relaxMethod)
 	createInsideGrid()
-	#for i in outermostLayer :
-		#print(i)
-	#print("triangles: " + str(triangles.size()))
-	#for i in triangles :
-		#print(i)
-	#print("squares: " + str(squares.size()))
-	#for i in squares :
-		#print(i)
-	#print("after split square: " + str(afterSplitSquares.size()))
-	#for i in afterSplitSquares :
-		#print(i)
-	if addNodeToTree :
-		var insideGridNode : Node3D = Node3D.new()
-		insideGridNode.set_name("insideGrid")
-		add_child(insideGridNode)
-		insideGridNode.owner = get_tree().edited_scene_root
-		var outsideGridNode : Node3D = Node3D.new()
-		outsideGridNode.set_name("outsideGrid")
-		add_child(outsideGridNode)
-		outsideGridNode.owner = get_tree().edited_scene_root
-		
-		for i in mainGrid :
-			var outsideGrid : Node3D = get_node("outsideGrid")
-			outsideGrid.add_child(i)
-			i.owner = get_tree().edited_scene_root
-			for j in i.neighbour :
+
+func renderGrid() -> void :
+	for i in get_children() :
+		if i.get_name() == "insideGrid" || i.get_name() == "outsideGrid" :
+			remove_child(i)
+			i.queue_free()
+	var insideGridNode : Node3D = Node3D.new()
+	insideGridNode.set_name("insideGrid")
+	add_child(insideGridNode)
+	insideGridNode.owner = get_tree().edited_scene_root
+	var outsideGridNode : Node3D = Node3D.new()
+	outsideGridNode.set_name("outsideGrid")
+	add_child(outsideGridNode)
+	outsideGridNode.owner = get_tree().edited_scene_root
+	
+	for i in mainGrid :
+		var outsideGrid : Node3D = get_node("outsideGrid")
+		outsideGrid.add_child(i)
+		i.owner = get_tree().edited_scene_root
+		for j in i.neighbour :
+			var neighbourLine : Line3D = Line3D.new(Vector3.ZERO, Vector3.ZERO.lerp(j.position - i.position, 0.5), Color.WHITE)
+			i.add_child(neighbourLine)
+			neighbourLine.owner = get_tree().edited_scene_root
+	
+	for i in insideGrid :
+		var insideGridThing : Node3D = get_node("insideGrid")
+		insideGridThing.add_child(i)
+		i.owner = get_tree().edited_scene_root
+		for j in i.neighbour :
+			if j :
 				var neighbourLine : Line3D = Line3D.new(Vector3.ZERO, Vector3.ZERO.lerp(j.position - i.position, 0.5), Color.WHITE)
 				i.add_child(neighbourLine)
 				neighbourLine.owner = get_tree().edited_scene_root
-		
-		for i in insideGrid :
-			var insideGridThing : Node3D = get_node("insideGrid")
-			insideGridThing.add_child(i)
-			i.owner = get_tree().edited_scene_root
-			for j in i.neighbour :
-				if j :
-					var neighbourLine : Line3D = Line3D.new(Vector3.ZERO, Vector3.ZERO.lerp(j.position - i.position, 0.5), Color.WHITE)
-					i.add_child(neighbourLine)
-					neighbourLine.owner = get_tree().edited_scene_root
 
 #region Utilities
 #GRAPH UTILITY
@@ -511,7 +509,8 @@ func create(parGridSize: int = gridSize, parSeed: String = userSeed) -> void:
 		userSeed = randSeed
 	else :
 		userSeed = parSeed
-	renderGrid()
+	initGrid()
+
 
 func loadMesh( centroid : CentroidNodeCustom ) -> Node3D :
 	var tileTypeBaseTen : int = centroid.getCentroidCode()
@@ -580,7 +579,6 @@ const VALID_RIVER_NODE : Array = [[40, 76, 52, 44, 68], [80]]
 const VALID_RIVER_END_CODE : Array[int] = [36, 12, 4, 28]
 const TRANSITION_NODE : Array[int] = [76, 52, 44, 68]
 
-#ADD ABILITY TO MERGE RIVER ##############
 func createRiverDrain(gradientField : Image, start : CentroidNodeCustom = null, length = 10) -> void :
 	var validNode : Dictionary = getPotValidRiverNode()
 	if !start :
@@ -629,6 +627,7 @@ func createRiverDrain(gradientField : Image, start : CentroidNodeCustom = null, 
 					bestScore = neighborScore[jj]
 					to = neighbors[jj]
 			if bestScore == -INF :
+				print("hi")
 				to = null
 		if !to :
 			break
@@ -653,4 +652,29 @@ func getGradientDir(node : CentroidNodeCustom, gradientField : Image) -> Vector2
 	var dirY : float = samplerResult.g * 2.0 - 1.0
 	return Vector2(dirX, dirY) 
 
+func getAllRiverNode() -> void :
+	for i in insideGrid :
+		if i.is_river() :
+			riverNodes.append(i)
+
+func cullShortRiver() -> void :
+	getAllRiverNode()
+	var roots : Array[CentroidNodeCustom]
+	for i in riverNodes :
+		if !i.riverFrom :
+			roots.append(i)
+	for ii in roots :
+		var list : Array[CentroidNodeCustom]
+		preOrder(ii, list)
+		if list.size() < riverLengthThreshold :
+			for i in list :
+				i.clearRiver()
+	
+
+func preOrder(node : CentroidNodeCustom, list : Array[CentroidNodeCustom]) -> void :
+	if !node :
+		return 
+	list.append(node)
+	for i in node.get_river_to() :
+		preOrder(i, list)
 #endregion

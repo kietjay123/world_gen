@@ -23,7 +23,7 @@ func run_export() -> void:
 	var export_count: int = 0
 
 	for child in get_children():
-		
+		child.set_position(Vector3(0, 0, 0))
 		for childChilren in child.get_children() :
 			childChilren.set_position(Vector3(0, 40, 0))
 			childChilren.get_mesh().surface_set_material(0, material_to_set)

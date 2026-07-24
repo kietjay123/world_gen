@@ -102,3 +102,7 @@ func get_terrain_code() -> int :
 		tileTypeBaseThree += reverseTypeLookUp[ii]
 	var tileTypeBaseTen : int = baseThreeToBaseTen(tileTypeBaseThree)
 	return tileTypeBaseTen
+
+func clearRiver() -> void :
+	riverFrom = null
+	riverTo = []
