@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://b0778dawee5tk" path="res://script/MeshDistortionTool.gd" id="1_qamll"]
 [ext_resource type="Material" uid="uid://cumx0505k3ghx" path="res://shader/universeTileMat.tres" id="2_68iay"]
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_fl5lp"]
+[sub_resource type="ArrayMesh" id="ArrayMesh_uienr"]
 _surfaces = [{
 "aabb": AABB(-40, -5, -40, 80, 1e-05, 80),
 "format": 34896613377,
@@ -17,7 +17,7 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_gmfnx"]
+[sub_resource type="ArrayMesh" id="ArrayMesh_1n7q7"]
 resource_name = "tiles asset final_mesh_0_080"
 _surfaces = [{
 "aabb": AABB(-40, -5, -40, 80, 1e-05, 80),
@@ -33,11 +33,11 @@ _surfaces = [{
 "vertex_data": PackedByteArray(0, 0, 0, 0, 255, 255, 255, 191, 255, 255, 0, 0, 0, 0, 255, 191, 255, 255, 0, 0, 255, 255, 255, 191, 0, 0, 0, 0, 0, 0, 255, 191, 255, 255, 255, 127, 255, 255, 255, 127, 255, 255, 255, 127, 255, 255, 255, 127)
 }]
 blend_shape_mode = 0
-shadow_mesh = SubResource("ArrayMesh_fl5lp")
+shadow_mesh = SubResource("ArrayMesh_uienr")
 
-[node name="MMMM(1)" type="Node3D" unique_id=447457819]
+[node name="MMMM(1)" type="Node3D" unique_id=883796654]
 script = ExtResource("1_qamll")
 
-[node name="model_0_066" type="MeshInstance3D" parent="." unique_id=60996072]
+[node name="model_0_066" type="MeshInstance3D" parent="." unique_id=2088870461]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 40, 0)
-mesh = SubResource("ArrayMesh_gmfnx")
+mesh = SubResource("ArrayMesh_1n7q7")

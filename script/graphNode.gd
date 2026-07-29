@@ -17,6 +17,8 @@ var tileTypeString : Dictionary[TYPE, String] = {
 }
 @export var tileType : TYPE 
 
+@export var modable : bool = true
+
 func _init(parName : String, parPosition : Vector3, parNeighbour : Array[GraphNodeCustom] = []) -> void:
 	self.name = parName
 	self.neighbour =  parNeighbour
@@ -58,3 +60,9 @@ func set_type(type : TYPE) -> void :
 	for i in get_children() :
 		if i is Line3D :
 			i.setColor(tileColor[get_type()])
+
+func createNeighborLine() -> void :
+	for j in get_neighbour() :
+			var neighbourLine : Line3D = Line3D.new(Vector3.ZERO, Vector3.ZERO.lerp(j.position - position, 0.5), tileColor[get_type()])
+			add_child(neighbourLine)
+			neighbourLine.owner = get_tree().edited_scene_root

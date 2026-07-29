@@ -2,7 +2,6 @@
 class_name TileDataRes extends Resource
 
 @export_tool_button("UpdateLookUpTable") var ulut = updateTable
-@export_tool_button("PrintCode") var pc = getTypeCode
 
 @export var meshNameLookUp : Dictionary = {
 	"WWWW" : {
@@ -33,7 +32,7 @@ class_name TileDataRes extends Resource
 	},
 	"LLMW" : {
 		"names" : [
-			"llwm(1)",
+			"llmw(1)",
 		],
 		"mirror" : true,
 	},
@@ -92,7 +91,8 @@ class_name TileDataRes extends Resource
 			"mmll(1)",
 			"mmll(2)",
 			"mmll(3)",
-			"mmll(4)"
+			"mmll(4)",
+			"mmll(5)"
 		],
 		"mirror" : false,
 	},
@@ -300,6 +300,42 @@ class_name TileDataRes extends Resource
 			"llllp964r5(1)",
 		],
 		"mirror" : false,
+	},
+	"MLLL/0000/0010" : {
+		"names" : [
+			"mlllp2(1)",
+		],
+		"mirror" : true,
+	},
+	"MLLL/0000/0110" : {
+		"names" : [
+			"mlllp62(1)",
+		],
+		"mirror" : false,
+	},
+	"LLWL/0000/1000" : {
+		"names" : [
+			"llwlp9(1)",
+		],
+		"mirror" : true,
+	},
+	"LLWL/0000/1001" : {
+		"names" : [
+			"llwlp94(1)",
+		],
+		"mirror" : false,
+	},
+	"MMLL/0000/0010" : {
+		"names" : [
+			"mmllp2(1)",
+		],
+		"mirror" : false,
+	},
+	"LLWW/0000/0010" : {
+		"names" : [
+			"llwwp9(1)",
+		],
+		"mirror" : false,
 	}
 }
 
@@ -319,6 +355,7 @@ enum TYPE {W, L, M}
 func updateTable() -> void :
 	var final : Dictionary[int, Dictionary] = {}
 	for i : String in meshNameLookUp.keys() :
+		print(i)
 		var substr : PackedStringArray = i.split("/")
 		var terrain : String = substr[0]
 		var river : String = substr[1] if substr.size() == 2 else "0000"
@@ -340,6 +377,7 @@ func updateTable() -> void :
 			for kk in uniqueVariation[jj].right(4) :
 				baseThreeTerrain += str(TYPE[kk])
 			var baseTen : int = baseThreeToBaseTen(uniqueVariation[jj].left(-4) + baseThreeTerrain)
+			print(baseTen)
 			final[baseTen] = {"type": i, "rotation" : jj, "mirror" : false}
 		
 		if meshNameLookUp[i]["mirror"] == true :
@@ -367,6 +405,7 @@ func updateTable() -> void :
 				for kk in uniqueVariation[jj].right(4) :
 					baseThreeTerrain += str(TYPE[kk])
 				var baseTen : int = baseThreeToBaseTen(uniqueVariation[jj].left(-4) + baseThreeTerrain)
+				print(baseTen)
 				final[baseTen] = {"type": i, "rotation" : jj, "mirror" : true}
 	lookUptable = final
 
@@ -384,24 +423,3 @@ func mirrorRiver(input : String) -> String :
 	input[1] = input[3]
 	input[3] = a
 	return input 
-
-func getTypeCode() -> void :
-	var centroidtype : Array[String] = [
-		"MMMM"
-	]
-	var final : Dictionary[int, Dictionary] = {}
-	for i : String in centroidtype :
-		var temp := i
-		var uniqueVariation : Array[String] = []
-		uniqueVariation.append(temp)
-		for j in 3 :
-			temp = (temp.right(1) + temp).substr(0, 4)
-			if !uniqueVariation.has(temp) :
-				uniqueVariation.append(temp)
-		for jj in uniqueVariation.size() :
-			var baseThreeStr : String = ""
-			for kk in uniqueVariation[jj] :
-				baseThreeStr += str(TYPE[kk])
-			var baseTen : int = baseThreeToBaseTen(baseThreeStr)
-			final[baseTen] = {"type": i, "rotation" : jj}
-	print(final.keys())

@@ -149,8 +149,9 @@ func createMap() -> void :
 	
 	for i in river :
 		graphNode.createRiverDrain(await shaderOutput.getOutput("gradientMap"))
-	
 	graphNode.cullShortRiver()
+	
+	graphNode.createNav()
 	
 	if addGraphNode :
 		graphNode.addNodeToTree = true

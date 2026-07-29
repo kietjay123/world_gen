@@ -1,6 +1,6 @@
 @tool
 class_name Hex extends Node3D
-
+#region variable
 var randy :=  RandomNumberGenerator.new()
 
 @export_tool_button("Create", "Callable") var Create = renderGrid
@@ -51,7 +51,7 @@ var insideGrid : Array[CentroidNodeCustom] = []
 var meshes : Array[Node3D] = []
 
 var riverNodes : Array[CentroidNodeCustom] = []
-
+#endregion
 #region Inital Hex Grid
 func createGrid() -> void :
 	var startingPoint = GraphNodeCustom.new("0_0 0", Vector3.ZERO, [])
@@ -411,25 +411,17 @@ func renderGrid() -> void :
 	outsideGridNode.set_name("outsideGrid")
 	add_child(outsideGridNode)
 	outsideGridNode.owner = get_tree().edited_scene_root
-	
+	var outsideGrid : Node3D = get_node("outsideGrid")
+	var insideGridThing : Node3D = get_node("insideGrid")
 	for i in mainGrid :
-		var outsideGrid : Node3D = get_node("outsideGrid")
 		outsideGrid.add_child(i)
 		i.owner = get_tree().edited_scene_root
-		for j in i.neighbour :
-			var neighbourLine : Line3D = Line3D.new(Vector3.ZERO, Vector3.ZERO.lerp(j.position - i.position, 0.5), Color.WHITE)
-			i.add_child(neighbourLine)
-			neighbourLine.owner = get_tree().edited_scene_root
+		i.createNeighborLine()
 	
 	for i in insideGrid :
-		var insideGridThing : Node3D = get_node("insideGrid")
 		insideGridThing.add_child(i)
 		i.owner = get_tree().edited_scene_root
-		for j in i.neighbour :
-			if j :
-				var neighbourLine : Line3D = Line3D.new(Vector3.ZERO, Vector3.ZERO.lerp(j.position - i.position, 0.5), Color.WHITE)
-				i.add_child(neighbourLine)
-				neighbourLine.owner = get_tree().edited_scene_root
+		i.createNeighborLine()
 
 #region Utilities
 #GRAPH UTILITY
@@ -501,7 +493,7 @@ func findGeometryWithVertices(geometries: Array[Array], vertices: Array[GraphNod
 	#print("pool" + str(pool))
 	return pool
 #endregion
-
+#region init stuff
 func create(parGridSize: int = gridSize, parSeed: String = userSeed) -> void:
 	gridSize = parGridSize
 	if parSeed.is_empty() :
@@ -538,7 +530,6 @@ func renderMesh() -> void :
 			meshes.append(newMesh)
 			meshesNode.add_child(newMesh)
 			newMesh.owner = get_tree().edited_scene_root
-	
 	createOcean()
 
 func setInsideGridType() -> void :
@@ -550,9 +541,8 @@ func createOcean() -> void :
 	oceanNode.start(gridSize * gridSpacing * 2, gridSize * gridSpacing * 2)
 	add_child(oceanNode)
 	oceanNode.owner = get_tree().edited_scene_root
-
+#endregion
 #region river stuff
-
 func getPotValidRiverNode() -> Dictionary:
 	const VALID_CODES : Array[int] = [76, 52, 44, 68]
 	const VALID_END_CODES : Array[int] = [36, 12, 4, 28]
@@ -627,7 +617,6 @@ func createRiverDrain(gradientField : Image, start : CentroidNodeCustom = null, 
 					bestScore = neighborScore[jj]
 					to = neighbors[jj]
 			if bestScore == -INF :
-				print("hi")
 				to = null
 		if !to :
 			break
@@ -678,3 +667,48 @@ func preOrder(node : CentroidNodeCustom, list : Array[CentroidNodeCustom]) -> vo
 	for i in node.get_river_to() :
 		preOrder(i, list)
 #endregion
+#region road stuff
+func createNav() -> void :
+	var temp : Array[CentroidNodeCustom] = insideGrid.duplicate()
+	temp.filter(pathable)
+	for i in temp :
+		var edges : Array[int] = [0,1,2,3]
+		if i.is_river() :
+			if i.riverFrom :
+				edges[i.neighbour.find(i.riverFrom)] = -1
+			for k in i.riverTo :
+				edges[(i.neighbour.find(k))] = -1
+		if [2713,931,4657,1579].has(i.getCentroidCode()) :
+			prints(edges, i)
+		for j in edges :
+			if j == -1 :
+				continue
+			if i.vertices[j].tileType == 1 || (i.vertices[j].tileType == 2 && i.vertices[j].modable):
+				if i.vertices[(j + 1) % 4].tileType == 1 || (i.vertices[(j + 1) % 4].tileType == 2 && i.vertices[(j + 1) % 4].modable) :
+					i.set_pathable_single(j, true)
+	
+#FIX add water tile
+const PATH_TILE : Array = [
+	40,										#LLLL
+	80,										#MMMM
+	37,39,13,31,							#LLWL
+	42,14,58,46,38,66,22,34,				#LLMW
+	36,12,4,28,								#LLWW
+	51,17,59,73,65,75,25,35,				#LMMW
+	67,49,43,41,							#MLLL
+	70,50,									#MLML
+	76,52,44,68,							#MMLL
+	77,79,53,71,							#MMLM
+	74,78,26,62,							#MMWM
+	526,202,4414,1498,						#LLLL/0020
+	2713,931,4657,1579,						#LLLL/1020
+	3685,1255,445,4495,2389,5143,1741,607	#LLLL/1200
+	]
+
+func pathable(node : CentroidNodeCustom) -> bool :
+	if PATH_TILE.has(node.getCentroidCode()) :
+		return true 
+	else :
+		return false
+
+#endregion 

@@ -69,13 +69,13 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_6q73h")
 
-[node name="LLLLP64R5(1)" type="Node3D" unique_id=1202644957]
+[node name="LLLLP64R5(1)" type="Node3D" unique_id=1518878340]
 script = ExtResource("1_275x1")
 
-[node name="model_0_110" type="MeshInstance3D" parent="." unique_id=1317852462]
+[node name="model_0_110" type="MeshInstance3D" parent="." unique_id=264159208]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 40, 0)
 mesh = SubResource("ArrayMesh_20d3c")
 
-[node name="model_0_111" type="MeshInstance3D" parent="." unique_id=53369321]
+[node name="model_0_111" type="MeshInstance3D" parent="." unique_id=1783084178]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 40, 0)
 mesh = SubResource("ArrayMesh_xeurg")

@@ -133,21 +133,21 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_0jgir")
 
-[node name="LLLLR926(1)" type="Node3D" unique_id=784096282]
+[node name="LLLLR926(1)" type="Node3D" unique_id=743896833]
 script = ExtResource("1_742mj")
 
-[node name="model_0_054" type="MeshInstance3D" parent="." unique_id=2005126987]
+[node name="model_0_054" type="MeshInstance3D" parent="." unique_id=40432584]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 40, 0)
 mesh = SubResource("ArrayMesh_w4acb")
 
-[node name="model_0_055" type="MeshInstance3D" parent="." unique_id=246194107]
+[node name="model_0_055" type="MeshInstance3D" parent="." unique_id=1116546584]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 40, 0)
 mesh = SubResource("ArrayMesh_otrla")
 
-[node name="model_0_056" type="MeshInstance3D" parent="." unique_id=1171034443]
+[node name="model_0_056" type="MeshInstance3D" parent="." unique_id=1913321652]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 40, 0)
 mesh = SubResource("ArrayMesh_kkv5w")
 
-[node name="model_0_057" type="MeshInstance3D" parent="." unique_id=667750641]
+[node name="model_0_057" type="MeshInstance3D" parent="." unique_id=768039061]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 40, 0)
 mesh = SubResource("ArrayMesh_56yy8")

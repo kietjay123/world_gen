@@ -9,6 +9,9 @@ class_name CentroidNodeCustom extends "res://script/graphNode.gd"
 
 @export var riverTo : Array[CentroidNodeCustom] = []  
 
+@export var pathable : Array[bool] = [false, false, false, false]
+@export var pathed : Array[bool] = [false, false, false, false]
+
 func _init(parName : String, parPosition : Vector3, parNeighbour : Array[GraphNodeCustom] = [], parVertices : Array[GraphNodeCustom] = []) -> void:
 	super(parName, parPosition, parNeighbour)
 	self.vertices = parVertices
@@ -68,6 +71,10 @@ func get_river_from() -> CentroidNodeCustom :
 	return riverFrom
 
 func set_river_from(value : CentroidNodeCustom) -> void :
+	if modable == true :
+		for i in vertices :
+			i.modable = false
+	modable = false
 	riverFrom = value
 	var fromIdx := neighbour.find(riverFrom)
 	if get_child_count() == 0 :
@@ -80,6 +87,10 @@ func set_river_to(value : Array[CentroidNodeCustom]) -> void :
 	riverTo = value 
 
 func add_river_to(value : CentroidNodeCustom) -> void :
+	if modable == true :
+		for i in vertices :
+			i.modable = false
+	modable = false
 	riverTo.append(value)
 	var toIdx := neighbour.find(riverTo[-1])
 	if get_child_count() == 0 :
@@ -106,3 +117,33 @@ func get_terrain_code() -> int :
 func clearRiver() -> void :
 	riverFrom = null
 	riverTo = []
+
+func getLineColor(_neighbor : CentroidNodeCustom) -> Color :
+	if !pathable.is_empty() :
+		if pathable[neighbour.find(_neighbor)] == true :
+			return Color.CORAL
+	if is_river() :
+		if _neighbor == riverFrom :
+			return Color.CYAN
+		elif riverTo.has(_neighbor) :
+			return Color.BLACK
+	return Color.WHITE
+
+func createNeighborLine() -> void:
+	for j in neighbour :
+			if j :
+				var neighbourLine : Line3D = Line3D.new(Vector3.ZERO, Vector3.ZERO.lerp(j.position - position, 0.5), getLineColor(j))
+				add_child(neighbourLine)
+				neighbourLine.owner = get_tree().edited_scene_root
+
+func get_pathable() -> Array[bool] :
+	return pathable
+func set_pathable(_pathable : Array[bool]) -> void :
+	_pathable = pathable
+func set_pathable_single(idx : int , value : bool) -> void :
+	pathable[idx] = value
+
+func get_pathed() -> Array[bool] :
+	return pathed
+func set_pathed(_path : Array[bool]) :
+	pathed = _path 
