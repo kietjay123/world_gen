@@ -301,6 +301,18 @@ class_name TileDataRes extends Resource
 		],
 		"mirror" : false,
 	},
+	"LLLL/0020/0100" : {
+		"names" : [
+			"llllp6r5(1)",
+		],
+		"mirror" : true,
+	},
+	"LLLL/0020/1000" : {
+		"names" : [
+			"llllp9r5(1)",
+		],
+		"mirror" : false,
+	},
 	"MLLL/0000/0010" : {
 		"names" : [
 			"mlllp2(1)",
@@ -358,8 +370,10 @@ func updateTable() -> void :
 		print(i)
 		var substr : PackedStringArray = i.split("/")
 		var terrain : String = substr[0]
-		var river : String = substr[1] if substr.size() == 2 else "0000"
-		var path : String = substr[2] if substr.size() == 3 else "0000"
+		var river : String = substr[1] if substr.size() > 1 else "0000"
+		var path : String = substr[2] if substr.size() > 2 else "0000"
+		if i == "LLLL/1020/0101" :
+			prints(path, river, terrain)
 		var uniqueVariation : Array[String] = []
 		uniqueVariation.append(path + river + terrain)
 		for j in 3 :
@@ -382,8 +396,8 @@ func updateTable() -> void :
 		
 		if meshNameLookUp[i]["mirror"] == true :
 			terrain = substr[0]
-			river = substr[1] if substr.size() == 2 else "0000"
-			path = substr[2] if substr.size() == 3 else "0000"
+			river = substr[1] if substr.size() > 1 else "0000"
+			path = substr[2] if substr.size() > 2 else "0000"
 			terrain = mirrorTerrain(terrain)
 			river = mirrorRiver(river)
 			# BUG MAYBe

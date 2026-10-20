@@ -45,6 +45,9 @@ func set_centroid_tile_type() -> void:
 			riverString[neighbour.find(riverFrom)] = "1"
 			for i in riverTo.size() :
 				riverString[neighbour.find(riverTo[i])] = "2"
+	for i in pathed.size() :
+		if pathed[i] == true :
+			pathString[i] = "1"
 	centroidTileType = pathString + riverString + terrainString
 
 var reverseTypeLookUp : Dictionary[String, String] =  {"W" : "0", "L" : "1", "M" : "2"}
@@ -114,14 +117,20 @@ func get_terrain_code() -> int :
 	var tileTypeBaseTen : int = baseThreeToBaseTen(tileTypeBaseThree)
 	return tileTypeBaseTen
 
+func get_terrain_code_string() -> String :
+	var localTileType : String = get_centroid_tile_type()
+	var terrainCode : String = localTileType.right(4)
+	return terrainCode
+
 func clearRiver() -> void :
 	riverFrom = null
 	riverTo = []
 
 func getLineColor(_neighbor : CentroidNodeCustom) -> Color :
-	if !pathable.is_empty() :
-		if pathable[neighbour.find(_neighbor)] == true :
-			return Color.CORAL
+	if pathable[neighbour.find(_neighbor)] == true :
+		if pathed[neighbour.find(_neighbor)] == true :
+			return Color.BLUE_VIOLET
+		return Color.CORAL
 	if is_river() :
 		if _neighbor == riverFrom :
 			return Color.CYAN
@@ -147,3 +156,12 @@ func get_pathed() -> Array[bool] :
 	return pathed
 func set_pathed(_path : Array[bool]) :
 	pathed = _path 
+
+func neighbourIsPathed(_neighbour : CentroidNodeCustom) -> bool :
+	var idx : int = neighbour.find(_neighbour)
+	if idx == -1 :
+		return false
+	elif pathed[idx] == false :
+		return false
+	else :
+		return true

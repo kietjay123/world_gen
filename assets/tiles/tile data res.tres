@@ -805,6 +805,21 @@ lookUptable = Dictionary[int, Dictionary]({
 "rotation": 1,
 "type": "MMLL/0000/0010"
 },
+7087: {
+"mirror": true,
+"rotation": 0,
+"type": "LLLL/0020/0100"
+},
+8059: {
+"mirror": false,
+"rotation": 3,
+"type": "LLLL/0020/1000"
+},
+10975: {
+"mirror": false,
+"rotation": 2,
+"type": "LLLL/0020/0100"
+},
 19696: {
 "mirror": false,
 "rotation": 2,
@@ -840,20 +855,55 @@ lookUptable = Dictionary[int, Dictionary]({
 "rotation": 0,
 "type": "MMLL/0000/0010"
 },
+19885: {
+"mirror": false,
+"rotation": 1,
+"type": "LLLL/0020/0100"
+},
+21181: {
+"mirror": true,
+"rotation": 3,
+"type": "LLLL/0020/0100"
+},
+24097: {
+"mirror": false,
+"rotation": 2,
+"type": "LLLL/0020/1000"
+},
 26275: {
 "mirror": false,
 "rotation": 3,
 "type": "LLWL/0000/1001"
 },
 26284: {
-"mirror": true,
-"rotation": 3,
-"type": "LLLL/0020/1100"
+"mirror": false,
+"rotation": 2,
+"type": "LLLL/0000/1100"
 },
 26293: {
 "mirror": false,
 "rotation": 1,
 "type": "MLLL/0000/0110"
+},
+27175: {
+"mirror": true,
+"rotation": 1,
+"type": "LLLL/1020/0011"
+},
+27742: {
+"mirror": true,
+"rotation": 3,
+"type": "LLLL/0020/1100"
+},
+28957: {
+"mirror": false,
+"rotation": 0,
+"type": "LLLL/1020/0011"
+},
+30658: {
+"mirror": false,
+"rotation": 2,
+"type": "LLLL/0020/1100"
 },
 59062: {
 "mirror": true,
@@ -890,9 +940,44 @@ lookUptable = Dictionary[int, Dictionary]({
 "rotation": 3,
 "type": "MMLL/0000/0010"
 },
-65650: {
+59251: {
+"mirror": false,
+"rotation": 1,
+"type": "LLLL/0020/1000"
+},
+59575: {
 "mirror": false,
 "rotation": 0,
+"type": "LLLL/0020/0100"
+},
+63463: {
+"mirror": true,
+"rotation": 2,
+"type": "LLLL/0020/0100"
+},
+65650: {
+"mirror": false,
+"rotation": 1,
+"type": "LLLL/0000/1010"
+},
+66136: {
+"mirror": false,
+"rotation": 0,
+"type": "LLLL/0020/0101"
+},
+68323: {
+"mirror": false,
+"rotation": 0,
+"type": "LLLL/1020/0101"
+},
+70024: {
+"mirror": false,
+"rotation": 2,
+"type": "LLLL/0020/0101"
+},
+70267: {
+"mirror": false,
+"rotation": 2,
 "type": "LLLL/1020/0101"
 },
 78745: {
@@ -901,16 +986,41 @@ lookUptable = Dictionary[int, Dictionary]({
 "type": "LLWL/0000/1001"
 },
 78772: {
-"mirror": true,
-"rotation": 2,
-"type": "LLLL/0020/1100"
+"mirror": false,
+"rotation": 1,
+"type": "LLLL/0000/1100"
 },
 78799: {
 "mirror": false,
 "rotation": 0,
 "type": "MLLL/0000/0110"
 },
+78934: {
+"mirror": false,
+"rotation": 1,
+"type": "LLLL/0020/1100"
+},
+80311: {
+"mirror": false,
+"rotation": 3,
+"type": "LLLL/1020/0011"
+},
+81445: {
+"mirror": true,
+"rotation": 0,
+"type": "LLLL/1020/0011"
+},
+83146: {
+"mirror": true,
+"rotation": 2,
+"type": "LLLL/0020/1100"
+},
 85333: {
+"mirror": false,
+"rotation": 1,
+"type": "LLLL/0000/1110"
+},
+89707: {
 "mirror": false,
 "rotation": 2,
 "type": "LLLL/0020/1101"
@@ -950,27 +1060,87 @@ lookUptable = Dictionary[int, Dictionary]({
 "rotation": 2,
 "type": "MMLL/0000/0010"
 },
+177349: {
+"mirror": true,
+"rotation": 1,
+"type": "LLLL/0020/0100"
+},
+177673: {
+"mirror": false,
+"rotation": 0,
+"type": "LLLL/0020/1000"
+},
+178645: {
+"mirror": false,
+"rotation": 3,
+"type": "LLLL/0020/0100"
+},
 183745: {
 "mirror": false,
 "rotation": 0,
 "type": "LLWL/0000/1001"
 },
 183748: {
-"mirror": true,
-"rotation": 0,
-"type": "LLLL/0020/1100"
+"mirror": false,
+"rotation": 3,
+"type": "LLLL/0000/1100"
 },
 183751: {
 "mirror": false,
 "rotation": 2,
 "type": "MLLL/0000/0110"
 },
+184234: {
+"mirror": true,
+"rotation": 0,
+"type": "LLLL/0020/1100"
+},
+184639: {
+"mirror": false,
+"rotation": 1,
+"type": "LLLL/1020/0011"
+},
+185206: {
+"mirror": false,
+"rotation": 3,
+"type": "LLLL/0020/1100"
+},
+188365: {
+"mirror": true,
+"rotation": 2,
+"type": "LLLL/1020/0011"
+},
 196870: {
+"mirror": false,
+"rotation": 0,
+"type": "LLLL/0000/1010"
+},
+197032: {
+"mirror": false,
+"rotation": 1,
+"type": "LLLL/0020/0101"
+},
+197761: {
 "mirror": false,
 "rotation": 1,
 "type": "LLLL/1020/0101"
 },
+198328: {
+"mirror": false,
+"rotation": 3,
+"type": "LLLL/0020/0101"
+},
+198409: {
+"mirror": false,
+"rotation": 3,
+"type": "LLLL/1020/0101"
+},
 203431: {
+"mirror": false,
+"rotation": 2,
+"type": "LLLL/0000/1110"
+},
+204889: {
 "mirror": false,
 "rotation": 3,
 "type": "LLLL/0020/1101"
@@ -981,21 +1151,51 @@ lookUptable = Dictionary[int, Dictionary]({
 "type": "LLWL/0000/1001"
 },
 236236: {
-"mirror": true,
-"rotation": 1,
-"type": "LLLL/0020/1100"
+"mirror": false,
+"rotation": 0,
+"type": "LLLL/0000/1100"
 },
 236237: {
 "mirror": false,
 "rotation": 3,
 "type": "MLLL/0000/0110"
 },
+236398: {
+"mirror": true,
+"rotation": 1,
+"type": "LLLL/0020/1100"
+},
+236722: {
+"mirror": false,
+"rotation": 0,
+"type": "LLLL/0020/1100"
+},
+237775: {
+"mirror": true,
+"rotation": 3,
+"type": "LLLL/1020/0011"
+},
+240853: {
+"mirror": false,
+"rotation": 2,
+"type": "LLLL/1020/0011"
+},
 242797: {
+"mirror": false,
+"rotation": 3,
+"type": "LLLL/0000/1110"
+},
+243283: {
 "mirror": false,
 "rotation": 0,
 "type": "LLLL/0020/1101"
 },
 255919: {
+"mirror": false,
+"rotation": 0,
+"type": "LLLL/0000/1110"
+},
+256081: {
 "mirror": false,
 "rotation": 1,
 "type": "LLLL/0020/1101"

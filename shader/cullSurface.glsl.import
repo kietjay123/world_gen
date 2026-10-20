@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://bi0r8s8wktwta"
+path="res://.godot/imported/cullSurface.glsl-7fd7432bc59731ebaade619b39287961.res"
+
+[deps]
+
+source_file="res://shader/cullSurface.glsl"
+dest_files=["res://.godot/imported/cullSurface.glsl-7fd7432bc59731ebaade619b39287961.res"]
+
+[params]
+

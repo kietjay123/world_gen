@@ -152,6 +152,7 @@ func createMap() -> void :
 	graphNode.cullShortRiver()
 	
 	graphNode.createNav()
+	#graphNode.createRoad()
 	
 	if addGraphNode :
 		graphNode.addNodeToTree = true

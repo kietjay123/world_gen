@@ -2,54 +2,33 @@
 class_name Hex extends Node3D
 #region variable
 var randy :=  RandomNumberGenerator.new()
-
 @export_tool_button("Create", "Callable") var Create = renderGrid
-
 @export var gridSize : int = 2
-
 @export var gridSpacing : float = 50
-
 @export var userSeed : String = "test" : 
 	get: 
 		return userSeed
 	set(value):
 		userSeed = value
 		randy.set_seed(hash(value))
-
 @export var relaxIteration : int = 50
-
 @export var relaxForceScale : float = 0.1
-
 @export var useRelax : bool = true
-
 @export var addNodeToTree : bool = false
-
 @export_enum("Boids") var relaxMethod: String = "Boids"
-
 @export var tileData : TileDataRes 
-
 @export var ocean : PackedScene
-
 @export var riverLengthThreshold : int = 5
-
+@export var forestThreshold : float = 0.5
 var mainGrid : Array[GraphNodeCustom] = []
-
 var previousLayer : Array[GraphNodeCustom] = []
-
 var triangles : Array[Array] = []
-
 var squares : Array[Array] = []
-
 var afterSplitSquares : Array[Array] = []
-
 var offsetGrid : Array[GraphNodeCustom] = []
-
 var outermostLayer : Array[GraphNodeCustom] = []
-
 var insideGrid : Array[CentroidNodeCustom] = [] 
-
-var meshes : Array[Node3D] = []
-
+var meshes : Array[VisualTile] = []
 var riverNodes : Array[CentroidNodeCustom] = []
 #endregion
 #region Inital Hex Grid
@@ -504,12 +483,12 @@ func create(parGridSize: int = gridSize, parSeed: String = userSeed) -> void:
 	initGrid()
 
 
-func loadMesh( centroid : CentroidNodeCustom ) -> Node3D :
+func loadMesh( centroid : CentroidNodeCustom) -> Node3D :
 	var tileTypeBaseTen : int = centroid.getCentroidCode()
 	
 	#BUG is not deterministic
 	var randMesh : int = randi() % tileData.meshNameLookUp[tileData.lookUptable[tileTypeBaseTen]["type"]]["names"].size()
-	var meshPath : String = tileData.scenePath + tileData.meshNameLookUp[tileData.lookUptable[tileTypeBaseTen]["type"]]["names"][randMesh] + ".tscn"
+	var meshPath : String = tileData.scenePath + tileData.meshNameLookUp[tileData.lookUptable[tileTypeBaseTen]["type"]]["names"][randMesh] + ".scn"
 	var mesh : Node3D = load(meshPath).instantiate()
 	var meshRotation : int = tileData.lookUptable[tileTypeBaseTen]["rotation"]
 	var meshMirror : int = tileData.lookUptable[tileTypeBaseTen]["mirror"]
@@ -524,13 +503,24 @@ func renderMesh() -> void :
 	meshesNode.set_name("meshes")
 	add_child(meshesNode)
 	meshesNode.owner = get_tree().edited_scene_root
+	
+	var noise : FastNoiseLite = FastNoiseLite.new()
+	noise.set_seed(randy.randi())
+	var noiseImg : Image = noise.get_image(int(gridSize * gridSpacing * 2), int(gridSize * gridSpacing * 2))
+	
 	for i in insideGrid.size() :
 		if insideGrid[i].getCentroidCode() != 0 :
-			var newMesh : Node3D = loadMesh(insideGrid[i])
+			var newMesh : VisualTile = loadMesh(insideGrid[i])
 			meshes.append(newMesh)
 			meshesNode.add_child(newMesh)
 			newMesh.owner = get_tree().edited_scene_root
+			newMesh.createGrass(noiseImg, forestThreshold)
 	createOcean()
+	stichingMesh()
+	for i in meshes :
+		i.removeMesh()
+	
+	createForestMesh(noiseImg)
 
 func setInsideGridType() -> void :
 	for i in insideGrid :
@@ -581,14 +571,14 @@ func createRiverDrain(gradientField : Image, start : CentroidNodeCustom = null, 
 		if from.get_river_from() :
 			break
 		elif TRANSITION_NODE.has(from.get_terrain_code()) :
-			prints(from, "trigger")
+			#prints(from, "trigger")
 			var lastNodeIdx : int = from.get_neighbour().find(from.get_river_to()[-1])
 			var nextNodeIdx = lastNodeIdx - 2
 			if VALID_RIVER_NODE[level + 1].has(from.get_neighbour()[nextNodeIdx].getCentroidCode()) :
 				to = from.get_neighbour()[nextNodeIdx]
 				level += 1
 			else :
-				prints(from.get_neighbour()[nextNodeIdx], "cut")
+				#prints(from.get_neighbour()[nextNodeIdx], "cut")
 				break
 		else :
 			var neighborScore : Array[float] = []
@@ -605,9 +595,9 @@ func createRiverDrain(gradientField : Image, start : CentroidNodeCustom = null, 
 				if !VALID_RIVER_NODE[level].has(neighbors[jj].get_terrain_code()) || !validNextRiverNode(from, neighbors[jj]) || past.has(neighbors[jj]) :
 					continue
 				if neighbors[jj].is_river() :
-					print("detected")
+					#print("detected")
 					if neighbors[jj].get_river_to().size() == 1  && neighbors[jj].get_river_from() :
-						print("merge")
+						#print("merge")
 						bestScore = 0
 						to = neighbors[jj]
 						break
@@ -678,8 +668,6 @@ func createNav() -> void :
 				edges[i.neighbour.find(i.riverFrom)] = -1
 			for k in i.riverTo :
 				edges[(i.neighbour.find(k))] = -1
-		if [2713,931,4657,1579].has(i.getCentroidCode()) :
-			prints(edges, i)
 		for j in edges :
 			if j == -1 :
 				continue
@@ -711,4 +699,180 @@ func pathable(node : CentroidNodeCustom) -> bool :
 	else :
 		return false
 
+func find_path_dijkstra(from_node: CentroidNodeCustom, to_node: CentroidNodeCustom) -> Array[CentroidNodeCustom]:
+	
+	if not from_node or not to_node:
+		return []
+		
+	if from_node == to_node:
+		return [from_node]
+
+	var distances: Dictionary = { from_node: 0.0 } # GraphNodeCustom -> float
+	var came_from: Dictionary = {}               # GraphNodeCustom -> GraphNodeCustom
+	var visited: Dictionary = {}                 # Set of visited nodes
+	var unvisited: Array[CentroidNodeCustom] = [from_node]
+
+	while unvisited.size() > 0:
+		# 1. Get unvisited node with smallest distance
+		var current: CentroidNodeCustom = unvisited[0]
+		var current_dist: float = distances[current]
+		
+		for node in unvisited:
+			if distances[node] < current_dist:
+				current = node
+				current_dist = distances[node]
+
+		# 2. Early exit on reaching target
+		if current == to_node:
+			return reconstruct_path(came_from, to_node)
+
+		unvisited.erase(current)
+		visited[current] = true
+
+		# 3. Explore adjacent neighbors
+		for i in current.get_pathable().size():
+			if current.get_pathable()[i] == false or visited.has(current.get_neighbour()[i]):
+				continue
+			var neighbour = current.get_neighbour()[i]
+			var step_cost: float = calculate_weight(current, neighbour)
+			var new_dist: float = distances[current] + step_cost
+
+			if not distances.has(neighbour) or new_dist < distances[neighbour]:
+				distances[neighbour] = new_dist
+				came_from[neighbour] = current
+				
+				if not unvisited.has(neighbour):
+					unvisited.append(neighbour)
+
+	return []
+
+func calculate_weight(from_n: CentroidNodeCustom, to_n: CentroidNodeCustom) -> float:
+	if from_n.neighbourIsPathed(to_n) :
+		return 1
+	if to_n.is_river() :
+		return 3
+	return 2
+
+func reconstruct_path(came_from: Dictionary, current: CentroidNodeCustom) -> Array[CentroidNodeCustom]:
+	var path: Array[CentroidNodeCustom] = [current]
+	while came_from.has(current):
+		current = came_from[current]
+		path.append(current)
+	path.reverse()
+	return path
+
+func createRoad() -> void :
+	for i in insideGrid.size() :
+		if insideGrid[i].name == " -4_25 -0_5 -4_0 0 ~ -3_5 -1 -3_5 -1 -3_5 -1 ~ -4_5 -1" || insideGrid[i].name == " 3_5 -1 ~ 3_0 0 3_5 -1 3_0 -2 ~ 3_5 -1 3_0 -1_0" :
+			prints(i, insideGrid[i])
+	var from : CentroidNodeCustom = insideGrid[317]
+	var to : CentroidNodeCustom = insideGrid[906]
+	var path : Array[CentroidNodeCustom] = find_path_dijkstra(from, to)
+	for i in path.size() - 1 :
+		path[i].pathed[path[i].get_neighbour().find(path[i + 1])] = true
+	for i in range(1, path.size()) :
+		path[i].pathed[path[i].get_neighbour().find(path[i - 1])] = true
+	for i in path :
+		for j in i.pathed.size() :
+			if i.pathed[j] == true :
+				if i.vertices[j].tileType != 1 :
+					i.vertices[j].set_type(GraphNodeCustom.TYPE.LAND)
+				if i.vertices[(j + 1) % 4].tileType != 1 :
+					i.vertices[(j + 1) % 4].set_type(GraphNodeCustom.TYPE.LAND)
+
 #endregion 
+
+func stichingMesh() -> void :
+	var toCheck : Array[String] = ["land", "water", "path"]
+	for type in toCheck :
+		var surface_array = []
+		surface_array.resize(Mesh.ARRAY_MAX)
+		var verts = PackedVector3Array()
+		var indices = PackedInt32Array()
+		for i in meshes :
+			var mesh : ArrayMesh
+			for j in i.get_children() :
+				if j.get_name().ends_with("-" + type) :#######
+					mesh = j.get_mesh()
+			if !mesh :
+				continue
+			var arr : Array = mesh.surface_get_arrays(0)
+			var packedVert : PackedVector3Array = PackedVector3Array(arr[Mesh.ARRAY_VERTEX]).duplicate()
+			var packedIndices : PackedInt32Array = PackedInt32Array(arr[Mesh.ARRAY_INDEX]).duplicate()
+			for j in packedIndices.size() :
+				packedIndices[j] = packedIndices[j] + verts.size()
+			verts.append_array(packedVert)
+			indices.append_array(packedIndices)
+		
+		surface_array[Mesh.ARRAY_VERTEX] = verts
+		surface_array[Mesh.ARRAY_INDEX] = indices
+	
+		var meshNode : MeshInstance3D = MeshInstance3D.new()
+		var tempMesh : ArrayMesh = ArrayMesh.new()
+		tempMesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, surface_array)
+		meshNode.set_mesh(tempMesh)
+		meshNode.set_name(type + "Mesh") 
+		add_child(meshNode)
+		meshNode.owner = get_tree().edited_scene_root
+
+func createForestMesh(noiseImg : Image) -> void :
+	var forestMesh : MeshInstance3D = get_node("landMesh")
+	var forestMeshArr : Array = forestMesh.get_mesh().surface_get_arrays(0)
+	var packedVert : PackedVector3Array = PackedVector3Array(forestMeshArr[Mesh.ARRAY_VERTEX]).duplicate()
+	var packedIndices : PackedInt32Array = PackedInt32Array(forestMeshArr[Mesh.ARRAY_INDEX])
+	var outputArr : PackedInt32Array = PackedInt32Array([])
+	outputArr.resize(packedIndices.size())
+	outputArr.fill(0)
+	var computeShader = ComputeHelper.create("res://shader/cullSurface.glsl")
+	
+	var noiseUniform = ImageUniform.create(noiseImg)
+	var thresholdAndOffset = StorageBufferUniform.create(PackedFloat32Array([forestThreshold, gridSize * gridSpacing]).to_byte_array())
+	var indicesUniform = StorageBufferUniform.create(packedIndices.to_byte_array())
+	var vertUniform = StorageBufferUniform.create(packedVert.to_byte_array())
+	var output = StorageBufferUniform.create(outputArr.to_byte_array())
+	computeShader.add_uniform_array([noiseUniform, thresholdAndOffset, indicesUniform, vertUniform, output])
+	var total_faces: int = int(ceil(packedIndices.size() / 3.0))
+	var workgroups_x: int = int(ceil(total_faces / 8.0))
+	computeShader.run(Vector3i(workgroups_x, 1, 1))
+	ComputeHelper.sync()
+	
+	var updatedOutput = output.get_data().to_int32_array()
+	var newIndices : PackedInt32Array = packedIndices.duplicate()
+	for i in range(updatedOutput.size() - 1, -1, -1) :
+		if updatedOutput[i] == 1 :
+			newIndices.remove_at(i)
+	var surface_array = []
+	var tempOffset : float = gridSize * gridSpacing
+	var mapWidth : float = tempOffset * 2
+	var packedUV : PackedVector2Array = PackedVector2Array([])
+	
+	for i in packedVert :
+		var uvX : float = (i.x + tempOffset) / mapWidth
+		var uvY : float = (i.z + tempOffset) / mapWidth
+		packedUV.append(Vector2(uvX, uvY))
+	
+	surface_array.resize(Mesh.ARRAY_MAX)
+	surface_array[Mesh.ARRAY_VERTEX] = packedVert
+	surface_array[Mesh.ARRAY_INDEX] = newIndices
+	surface_array[Mesh.ARRAY_TEX_UV] = packedUV
+	
+	var tempMesh : ArrayMesh = ArrayMesh.new()
+	tempMesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, surface_array)
+	var tempShape : ConcavePolygonShape3D = tempMesh.create_trimesh_shape() 
+	tempShape.set_backface_collision_enabled(true)
+	var meshNode : MeshInstance3D = MeshInstance3D.new()
+	meshNode.set_mesh(tempMesh)
+	meshNode.set_name("forestMesh") 
+	add_child(meshNode)
+	meshNode.owner = get_tree().edited_scene_root
+	
+	var colliderNode : StaticBody3D = StaticBody3D.new()
+	colliderNode.set_name("forestCollider") 
+	add_child(colliderNode)
+	colliderNode.owner = get_tree().edited_scene_root
+	
+	var shapeNode : CollisionShape3D = CollisionShape3D.new()
+	shapeNode.set_shape(tempShape)
+	shapeNode.set_name("forestShape") 
+	colliderNode.add_child(shapeNode)
+	shapeNode.owner = get_tree().edited_scene_root

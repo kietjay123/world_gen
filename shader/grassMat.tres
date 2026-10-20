@@ -1,0 +1,13 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://bp42d8t6mqlwq"]
+
+[ext_resource type="Shader" uid="uid://dfsmaofg53lk2" path="res://shader/grass.gdshader" id="1_7hukn"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_7hukn")
+shader_parameter/density = 1000.0
+shader_parameter/sparistyRamp = 0.1
+shader_parameter/currentLayer = 0
+shader_parameter/layerCount = 7
+shader_parameter/visibleRange = 0.0
+shader_parameter/colors = PackedColorArray(0.44705883, 0.65882355, 0.23921569, 1, 0.44705883, 0.65882355, 0.23921569, 1, 0.44705883, 0.65882355, 0.23921569, 1, 0.627451, 0.6627451, 0.44705883, 1, 0.16470589, 0.4862745, 0.1882353, 1)
