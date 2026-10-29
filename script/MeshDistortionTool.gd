@@ -27,8 +27,10 @@ enum TYPE {WATER, LAND, MOUNTAIN, PATH}
 @export var defaultBoundArray : Array = []
 @export var riverMaterial : Material = preload("res://shader/riverMat.tres")
 @export var grassMaterial : Material = preload("res://shader/grassMat.tres")
-@export var grassSpacing : float = 0.15
+@export var treeScatter : PackedScene = preload("res://scene/tree scatter.tscn")
+@export var grassSpacing : float = 0.025
 @export var grassLOD : Array[float] = [30, 100]
+@export var treeDensity : float = 0.0234375
 
 
 var defaultMesh : Array[MeshDataTool] = []
@@ -57,14 +59,14 @@ func runInit(parRotation : int, vertices : Array, graphNode : CentroidNodeCustom
 #region distorsion 
 func test() -> void:
 	boundArrayVector3 = [
-		Vector3(58.464,0,-104.273),
-		Vector3(40.201,0,-138.474),
-		Vector3(93.414,0,-106.799),
-		Vector3(78.283,0,-139.605),
-		Vector3(58.464,30,-104.273),
-		Vector3(40.201,30,-138.474),
-		Vector3(93.414,30,-106.799),
-		Vector3(78.283,30,-139.605),
+		Vector3(-172.246,0,138.563),
+		Vector3(-201.111,0,204.211),
+		Vector3(-239.215,0,138.551),
+		Vector3(-271.731,0,192.368),
+		Vector3(-172.246,30,138.563),
+		Vector3(-201.111,30,204.211),
+		Vector3(-239.215,30,138.551),
+		Vector3(-271.731,30,192.368),
 	]
 	updateMeshContructor()
 
@@ -445,52 +447,58 @@ func removeMesh() -> void :
 			undo_redo.add_undo_reference(child)
 			undo_redo.add_undo_method(self, "add_child", child)
 			undo_redo.commit_action()
-		if child.get_name().ends_with("-land") :
+		elif child.get_name().ends_with("-land") :
 			undo_redo.add_do_method(self, "remove_child", child)
 			undo_redo.add_undo_reference(child)
 			undo_redo.add_undo_method(self, "add_child", child)
 			undo_redo.commit_action()
-		if child.get_name().ends_with("-path") :
+		elif child.get_name().ends_with("-path") :
 			undo_redo.add_do_method(self, "remove_child", child)
 			undo_redo.add_undo_reference(child)
 			undo_redo.add_undo_method(self, "add_child", child)
 			undo_redo.commit_action()
-	
+		#elif child.get_name().ends_with("Collider") :
+			#undo_redo.add_do_method(self, "remove_child", child)
+			#undo_redo.add_undo_reference(child)
+			#undo_redo.add_undo_method(self, "add_child", child)
+			#undo_redo.commit_action()
+
+
 func createGrass(noise : Image, threshold : float) -> void :
 	#WARNING turn this on if not testing
-	if !centroidNode.get_terrain_code_string().contains("L") :
-		return 
+	#if !centroidNode.get_terrain_code_string().contains("L") :
+		#return 
 	for child in get_children():
 		if child.get_name().ends_with("-land") :
-			print(get_name())
 			var ogMesh : ArrayMesh = child.get_mesh()
 			var forestMesh : ArrayMesh = createForestMesh(ogMesh, noise, threshold)
 			if !forestMesh :
 				return
+			#LODTool(forestMesh)
 			#var meshNode : MeshInstance3D = MeshInstance3D.new()
 			#meshNode.set_mesh(forestMesh)
 			#meshNode.set_name("forestMesh") 
 			#add_child(meshNode)
 			#meshNode.owner = get_tree().edited_scene_root
 			
-			#var forestShape : ConcavePolygonShape3D = createForestColliderShape(forestMesh)
-			#var colliderNode : StaticBody3D = StaticBody3D.new()
-			#colliderNode.set_name("forestCollider") 
-			#add_child(colliderNode)
-			#colliderNode.owner = get_tree().edited_scene_root
-			#
-			#var shapeNode : CollisionShape3D = CollisionShape3D.new()
-			#shapeNode.set_shape(forestShape)
-			#shapeNode.set_name("forestShape") 
-			#colliderNode.add_child(shapeNode)
-			#shapeNode.owner = get_tree().edited_scene_root
-			#colliderNode.set_position(colliderNode.get_position() + Vector3(0, 39.9, 0))
+			var forestShape : ConcavePolygonShape3D = createForestColliderShape(forestMesh)
+			var colliderNode : StaticBody3D = StaticBody3D.new()
+			colliderNode.set_name("forestCollider") 
+			add_child(colliderNode)
+			colliderNode.owner = get_tree().edited_scene_root
+			
+			var shapeNode : CollisionShape3D = CollisionShape3D.new()
+			shapeNode.set_shape(forestShape)
+			shapeNode.set_name("forestShape") 
+			colliderNode.add_child(shapeNode)
+			shapeNode.owner = get_tree().edited_scene_root
+			colliderNode.set_position(colliderNode.get_position() + Vector3(0, 39.9, 0))
 			
 			var lowResGrass : ArrayMesh = createLowRezGrassMesh(forestMesh)
 			var surfaceVert : PackedVector3Array = []
 			var templateMesh : Array = lowResGrass.surface_get_arrays(0)
 			for i in templateMesh[Mesh.ARRAY_VERTEX].size() :
-				var vert : Vector3 = templateMesh[Mesh.ARRAY_VERTEX][i] + Vector3(0, 40.15, 0)
+				var vert : Vector3 = templateMesh[Mesh.ARRAY_VERTEX][i] + Vector3(0, 40.05, 0)
 				surfaceVert.append(vert)
 				vert += Vector3(0, grassSpacing, 0)
 			templateMesh[Mesh.ARRAY_VERTEX] = surfaceVert
@@ -517,10 +525,12 @@ func createGrass(noise : Image, threshold : float) -> void :
 				if i % 2 == 1 :
 					mat.set_shader_parameter("visibleRange", grassLOD[0])
 					grassLayer.set_visibility_range_end(grassLOD[0])
-				elif i != 0 && i != 2 :
+				elif i != 0:
 					mat.set_shader_parameter("visibleRange", grassLOD[1])
 					grassLayer.set_visibility_range_end(grassLOD[1])
 				grassLayerMesh.surface_set_material(0, mat)
+			print(name)
+			createTree()
 
 func createForestMesh(ogMesh : ArrayMesh, noiseImg : Image, threshold : float) -> ArrayMesh :
 	var forestMeshArr : Array = ogMesh.surface_get_arrays(0)
@@ -553,12 +563,11 @@ func createForestMesh(ogMesh : ArrayMesh, noiseImg : Image, threshold : float) -
 		return null
 	var surface_array = []
 	var AABBposition : Vector2 = Vector2(ogMesh.get_aabb().position.x, ogMesh.get_aabb().position.z)
-	var AABBsize : Vector2 = Vector2(ogMesh.get_aabb().size.x, ogMesh.get_aabb().size.z)
 	var packedUV : PackedVector2Array = PackedVector2Array([])
 	#BUG do this in the compute shader 
 	for i in packedVert :
-		var uvX : float = (i.x - AABBposition.x) / AABBsize.x
-		var uvY : float = (i.z - AABBposition.y) / AABBsize.y
+		var uvX : float = (i.x - AABBposition.x) / 80
+		var uvY : float = (i.z - AABBposition.y) / 80
 		packedUV.append(Vector2(uvX, uvY))
 	
 	surface_array.resize(Mesh.ARRAY_MAX)
@@ -578,6 +587,23 @@ func createForestColliderShape(ogMesh : Mesh) -> ConcavePolygonShape3D :
 	return tempShape
 
 func createLowRezGrassMesh(ogMesh : ArrayMesh) -> ArrayMesh :
+	var importer_mesh = ImporterMesh.new()
+	importer_mesh.add_surface(Mesh.PRIMITIVE_TRIANGLES, ogMesh.surface_get_arrays(0))
+	var normal_merge_angle = 25.0
+	importer_mesh.generate_lods(normal_merge_angle, normal_merge_angle, [])
+	var finalMesh : ArrayMesh = ArrayMesh.new()
+	var testMeshArr : Array = importer_mesh.get_mesh().surface_get_arrays(0)
+	var lodIdx : PackedInt32Array = []
+	if importer_mesh.get_surface_lod_count(0) >= 2:
+		lodIdx  = importer_mesh.get_surface_lod_indices(0, importer_mesh.get_surface_lod_count(0) - 2)
+	else :
+		lodIdx = testMeshArr[Mesh.ARRAY_INDEX]
+	testMeshArr[Mesh.ARRAY_INDEX] =  lodIdx
+	finalMesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, testMeshArr)
+	return finalMesh
+
+#buggy as hell but does reduce vert count
+func createLowRezGrassMesh2(ogMesh : ArrayMesh) -> ArrayMesh :
 	var importer_mesh = ImporterMesh.new()
 	importer_mesh.add_surface(Mesh.PRIMITIVE_TRIANGLES, ogMesh.surface_get_arrays(0))
 	var normal_merge_angle = 25.0
@@ -729,5 +755,22 @@ func LODTool(ogMesh : ArrayMesh) -> void :
 	testNode.set_lod_bias(0.001)
 	add_child(testNode)
 	testNode.owner = get_tree().edited_scene_root
-	
-	
+
+func createTree() -> void :
+	var scatterNode : ProtonScatter = treeScatter.instantiate()
+	add_child(scatterNode)
+	scatterNode.owner = get_tree().edited_scene_root
+	var shapeNode : ProtonScatterShape = scatterNode.get_node("ScatterShape")
+	var shape : ProtonScatterBoxShape = ProtonScatterBoxShape.new()
+	var aabb : AABB = get_child(0).get_mesh().get_aabb()
+	prints(shape, aabb)
+	shapeNode.set_position(Vector3(aabb.get_center().x, 0, aabb.get_center().z))
+	shape.size = aabb.size
+	shapeNode.shape = shape
+	scatterNode.modifier_stack.stack[0].amount = treeDensity * aabb.size.x * aabb.size.z
+	await scatterNode.build_completed
+	var outputNode : Marker3D = get_node("ProtonScatter/ScatterOutput")
+	outputNode.reparent(self)
+	scatterNode.queue_free()
+	var collider : StaticBody3D = get_node("./forestCollider")
+	collider.queue_free()

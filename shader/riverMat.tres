@@ -31,7 +31,7 @@ as_normal_map = true
 bump_strength = 3.0
 
 [resource]
-render_priority = 0
+render_priority = -1
 shader = ExtResource("1_geh3w")
 shader_parameter/color = Color(0.36078432, 0.65882355, 1, 0.4509804)
 shader_parameter/deep_water = Color(0, 0.32941177, 0.6901961, 0.5254902)

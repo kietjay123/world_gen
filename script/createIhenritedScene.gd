@@ -1,18 +1,16 @@
 @tool
 extends Node
 
-## The folder where you want to save the individual scenes (must end with a slash /).
 @export var output_folder: String = "res://assets/tiles/scenes/"
 
 @export var script_to_attach : Script  = load("res://script/MeshDistortionTool.gd")
 @export var material_to_set : Material = load("res://shader/universeTileMat.tres")
 
-## Click this checkbox in the Inspector to run the export process.
 @export var trigger_export: bool = false:
 	set(value):
 		if value and Engine.is_editor_hint():
 			run_export()
-		trigger_export = false # Immediately resets the checkbox
+		trigger_export = false 
 
 func run_export() -> void:
 	if not DirAccess.dir_exists_absolute(output_folder):

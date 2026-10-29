@@ -180,7 +180,7 @@ var _source_resource: Resource
 
 
 func _get_property_list() -> Array[Dictionary]:
-	var list := []
+	var list: Array[Dictionary] = []
 
 	if source == 0:
 		list.push_back({

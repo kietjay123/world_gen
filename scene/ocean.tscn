@@ -34,7 +34,7 @@ noise = SubResource("FastNoiseLite_mp5dc")
 seamless = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_khhxn"]
-render_priority = 1
+render_priority = -1
 shader = ExtResource("1_0nfae")
 shader_parameter/albedo = Color(0, 0.29411766, 0.44705883, 1)
 shader_parameter/albedo2 = Color(0, 0.5803922, 0.75686276, 1)
@@ -67,6 +67,7 @@ orientation = 1
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qthat"]
 resource_name = "0.615686_0.811765_0.929412_0.000000_0.000000"
+render_priority = -2
 transparency = 1
 cull_mode = 2
 albedo_color = Color(0.80784315, 0.9137255, 0.96862745, 0)
