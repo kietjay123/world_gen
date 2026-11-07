@@ -11,7 +11,7 @@ extends Node
 	set(value):
 		seaLevel = value
 
-@export_range(-1, 1) var landLevel : float = 0.492 : 
+@export_range(-1, 1) var landLevel : float = 0.7 : 
 	set(value):
 		landLevel = value
 
@@ -128,9 +128,12 @@ func samplingMesh(graphNode : Hex) -> void :
 		else :
 			push_warning("what" + str(samplerResult))
 
+func _ready() -> void: 
+	createMap()
+
 func createMap() -> void :
 	for i in get_children() :
-		if i is Camera3D :
+		if i.get_name() == "Light":
 			continue
 		i.queue_free()
 	

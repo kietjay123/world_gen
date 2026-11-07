@@ -798,3 +798,6 @@ func _on_transforms_ready(new_transforms: ProtonScatterTransformList) -> void:
 		await get_tree().process_frame
 
 	build_completed.emit()
+
+func _on_all_points_removed(modifier: ScatterBaseModifier) -> void:
+	build_completed.emit()

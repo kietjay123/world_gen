@@ -3,7 +3,7 @@ extends "base_modifier.gd"
 
 
 signal projection_completed
-
+signal points_removed_completely
 
 const ProtonScatterPhysicsHelper := preload("res://addons/proton_scatter/src/common/physics_helper.gd")
 
@@ -200,6 +200,11 @@ func _process_transforms(transforms, domain, _seed) -> void:
 		+ Collision mask is not set properly.
 		+ Max slope is too low.
 		"""
+	
+			
+		# Alternatively, call a custom method or emit directly if connected:
+		interrupt_update = true
+		emit_signal("points_removed_completely")
 
 
 func _align_with(t: Transform3D, normal: Vector3) -> Transform3D:

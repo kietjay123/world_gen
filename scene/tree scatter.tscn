@@ -39,13 +39,12 @@ script = ExtResource("2_l76df")
 stack = Array[ExtResource("3_o30vd")]([SubResource("Resource_4jrhg"), SubResource("Resource_7tj6v"), SubResource("Resource_l76df"), SubResource("Resource_o30vd")])
 
 [node name="ProtonScatter" type="Node3D" unique_id=1595933688]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
 script = ExtResource("1_7tj6v")
 show_output_in_tree = true
 render_mode = 2
 modifier_stack = SubResource("Resource_6olwb")
 Performance/use_chunks = true
-Performance/chunk_dimensions = Vector3(15, 15, 15)
+Performance/chunk_dimensions = Vector3(100, 15, 100)
 Performance/draw_order = 3
 metadata/_custom_type_script = "uid://dgqq1tf8prx5s"
 
@@ -59,14 +58,14 @@ path = "uid://cg6iswafqk8wk"
 
 [node name="ScatterItem3" type="Node3D" parent="." unique_id=704715319]
 script = ExtResource("8_0lopc")
-path = "uid://c4kbqxopi4qdu"
+path = "uid://cu3necvxr65x7"
 
 [node name="ScatterItem4" type="Node3D" parent="." unique_id=1293457924]
 script = ExtResource("8_0lopc")
 path = "uid://cth47yrcobu4s"
 
 [node name="ScatterShape" type="Node3D" parent="." unique_id=2051007460]
-transform = Transform3D(1, 0, -2.98023e-08, 0, 1, 0, 2.98023e-08, 0, 1, 0, 0, 0)
+transform = Transform3D(1, 0, -2.98023e-08, 0, 1, 0, 2.98023e-08, 0, 1, 0, 5, 0)
 script = ExtResource("9_ebwcr")
 
-[node name="ScatterOutput" type="Marker3D" parent="." unique_id=2099554806]
+[node name="ScatterOutput" type="Marker3D" parent="." unique_id=1282104186]

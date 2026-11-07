@@ -21,6 +21,9 @@ func start_update(scatter_node: ProtonScatter, domain):
 	var transforms = TransformList.new()
 
 	for modifier in stack:
+		# Check if this specific modifier has our custom signal and connect to it
+		if modifier.has_signal("points_removed_completely") and not modifier.is_connected("points_removed_completely", scatter_node._on_all_points_removed):
+			modifier.points_removed_completely.connect(scatter_node._on_all_points_removed.bind(modifier))
 		await modifier.process_transforms(transforms, domain, scatter_node.global_seed)
 
 	transforms_ready.emit(transforms)

@@ -19,7 +19,15 @@ var randy :=  RandomNumberGenerator.new()
 @export var tileData : TileDataRes 
 @export var ocean : PackedScene
 @export var riverLengthThreshold : int = 5
+@export var forestNoise : FastNoiseLite = FastNoiseLite.new()
 @export var forestThreshold : float = 0.5
+@export var poi : Dictionary[String, int] = {
+	"enemy" : 0,
+	"spawn" : 0,
+	"city" : 0,
+	"mine" : 0,
+	"harbor" : 0,
+}
 var mainGrid : Array[GraphNodeCustom] = []
 var previousLayer : Array[GraphNodeCustom] = []
 var triangles : Array[Array] = []
@@ -30,6 +38,7 @@ var outermostLayer : Array[GraphNodeCustom] = []
 var insideGrid : Array[CentroidNodeCustom] = [] 
 var meshes : Array[VisualTile] = []
 var riverNodes : Array[CentroidNodeCustom] = []
+
 #endregion
 #region Inital Hex Grid
 func createGrid() -> void :
@@ -504,9 +513,8 @@ func renderMesh() -> void :
 	add_child(meshesNode)
 	meshesNode.owner = get_tree().edited_scene_root
 	
-	var noise : FastNoiseLite = FastNoiseLite.new()
-	noise.set_seed(randy.randi())
-	var noiseImg : Image = noise.get_image(int(gridSize * gridSpacing * 2), int(gridSize * gridSpacing * 2))
+	forestNoise.set_seed(randy.randi())
+	var noiseImg : Image = forestNoise.get_image(int(gridSize * gridSpacing * 2), int(gridSize * gridSpacing * 2))
 	
 	for i in insideGrid.size() :
 		if insideGrid[i].getCentroidCode() != 0 :
@@ -516,11 +524,11 @@ func renderMesh() -> void :
 			newMesh.owner = get_tree().edited_scene_root
 			newMesh.createGrass(noiseImg, forestThreshold)
 	createOcean()
-	stichingMesh()
+	#stichingMesh()
 	for i in meshes :
 		i.removeMesh()
 	
-	createForestMesh(noiseImg)
+	#createForestMesh(noiseImg)
 
 func setInsideGridType() -> void :
 	for i in insideGrid :
@@ -528,9 +536,10 @@ func setInsideGridType() -> void :
 
 func createOcean() -> void :
 	var oceanNode : Node3D = ocean.instantiate()
-	oceanNode.start(gridSize * gridSpacing * 2, gridSize * gridSpacing * 2)
 	add_child(oceanNode)
 	oceanNode.owner = get_tree().edited_scene_root
+	oceanNode.start(gridSize * gridSpacing * 2, gridSize * gridSpacing * 2)
+
 #endregion
 #region river stuff
 func getPotValidRiverNode() -> Dictionary:
@@ -815,6 +824,7 @@ func stichingMesh() -> void :
 		add_child(meshNode)
 		meshNode.owner = get_tree().edited_scene_root
 
+#region forest stuff
 func createForestMesh(noiseImg : Image) -> void :
 	var forestMesh : MeshInstance3D = get_node("landMesh")
 	var forestMeshArr : Array = forestMesh.get_mesh().surface_get_arrays(0)
@@ -876,3 +886,8 @@ func createForestMesh(noiseImg : Image) -> void :
 	shapeNode.set_name("forestShape") 
 	colliderNode.add_child(shapeNode)
 	shapeNode.owner = get_tree().edited_scene_root
+
+#endregion 
+
+func seletPOIlocation() -> void :
+	pass

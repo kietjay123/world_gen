@@ -4,7 +4,7 @@ extends Node
 @export var output_folder: String = "res://assets/tiles/scenes/"
 
 @export var script_to_attach : Script  = load("res://script/MeshDistortionTool.gd")
-@export var material_to_set : Material = load("res://shader/universeTileMat.tres")
+@export var material_to_set : Material = load("res://shader/universalTileMat.tres")
 
 @export var trigger_export: bool = false:
 	set(value):
@@ -26,6 +26,9 @@ func run_export() -> void:
 		for childChilren in child.get_children() :
 			childChilren.set_position(Vector3(0, 40, 0))
 			childChilren.get_mesh().surface_set_material(0, material_to_set)
+			if childChilren.get_name().ends_with("-rivermesh") :
+				childChilren.set_gi_mode(0)
+			childChilren.set_layer_mask(2)
 		
 		# Create a clean, sanitized file name from the node name
 		# Sanitizing replaces characters like '(' and ')' with underscores to keep file paths safe

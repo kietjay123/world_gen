@@ -2,8 +2,9 @@
 
 [resource]
 resource_name = "1000ML(1).vox Material"
-cull_mode = 2
 vertex_color_use_as_albedo = true
 metallic_specular = 0.0
+uv1_triplanar = true
+uv1_triplanar_sharpness = 150.0
 stencil_mode = 3
 stencil_flags = 2

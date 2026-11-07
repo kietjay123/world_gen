@@ -30,7 +30,7 @@ enum TYPE {WATER, LAND, MOUNTAIN, PATH}
 @export var treeScatter : PackedScene = preload("res://scene/tree scatter.tscn")
 @export var grassSpacing : float = 0.025
 @export var grassLOD : Array[float] = [30, 100]
-@export var treeDensity : float = 0.0234375
+@export var treeDensity : float = 0.015625
 
 
 var defaultMesh : Array[MeshDataTool] = []
@@ -51,7 +51,7 @@ func _ready() -> void:
 func runInit(parRotation : int, vertices : Array, graphNode : CentroidNodeCustom, parMirror : bool) -> void :
 	centroidNode = graphNode
 	initializeConstructor(parRotation, vertices, parMirror)
-	updateMeshContructor()
+	updateMeshContructor(parMirror)
 	applyRiver()
 	if centroidNode.is_river() :
 		applyRiverDir()
@@ -68,7 +68,7 @@ func test() -> void:
 		Vector3(-239.215,30,138.551),
 		Vector3(-271.731,30,192.368),
 	]
-	updateMeshContructor()
+	updateMeshContructor(false)
 
 func test2() -> void :
 	var noise : FastNoiseLite = FastNoiseLite.new()
@@ -277,9 +277,20 @@ func updateMeshEditor() -> void :
 			child.mesh.clear_surfaces()
 			mdt.commit_to_surface(child.mesh)
 
-func updateMeshContructor() -> void :
+func updateMeshContructor(parMirror : bool) -> void :
 	for child in get_children() :
 		if child is MeshInstance3D :
+			if parMirror :
+				var saved_material : Material = child.mesh.surface_get_material(0)
+				var meshArr : Array = child.mesh.surface_get_arrays(0)
+				var index : PackedInt32Array = meshArr[Mesh.ARRAY_INDEX]
+				for i in range(0, index.size(), 3) :
+					var one : int = index[i]
+					index[i] = index[i + 1]
+					index[i + 1] = one
+				child.mesh.clear_surfaces()
+				child.mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, meshArr)
+				child.mesh.surface_set_material(0, saved_material)
 			mdt.clear()
 			mdt.create_from_surface(child.mesh, 0)
 			for i in 4 :
@@ -364,6 +375,7 @@ func updateMeshContructor() -> void :
 
 				shadow_mesh.clear_surfaces()
 				shadow_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, shadow_arrays)
+			
 
 #not needed might return 
 #func updateCheckSum() -> void :
@@ -439,29 +451,38 @@ func applyRiverDir() -> void :
 #endregion
 #BUG can not use this trick outside the editor / will crash project when save if use queue free
 func removeMesh() -> void :
-	var undo_redo := EditorInterface.get_editor_undo_redo()
-	undo_redo.create_action("Delete node")
-	for child in get_children() :
-		if child.get_name().ends_with("-water") :
-			undo_redo.add_do_method(self, "remove_child", child)
-			undo_redo.add_undo_reference(child)
-			undo_redo.add_undo_method(self, "add_child", child)
-			undo_redo.commit_action()
-		elif child.get_name().ends_with("-land") :
-			undo_redo.add_do_method(self, "remove_child", child)
-			undo_redo.add_undo_reference(child)
-			undo_redo.add_undo_method(self, "add_child", child)
-			undo_redo.commit_action()
-		elif child.get_name().ends_with("-path") :
-			undo_redo.add_do_method(self, "remove_child", child)
-			undo_redo.add_undo_reference(child)
-			undo_redo.add_undo_method(self, "add_child", child)
-			undo_redo.commit_action()
-		#elif child.get_name().ends_with("Collider") :
-			#undo_redo.add_do_method(self, "remove_child", child)
-			#undo_redo.add_undo_reference(child)
-			#undo_redo.add_undo_method(self, "add_child", child)
-			#undo_redo.commit_action()
+	if Engine.is_editor_hint():
+		var undo_redo := EditorInterface.get_editor_undo_redo()
+		undo_redo.create_action("Delete node")
+		for child in get_children() :
+			if child.get_name().ends_with("-water") :
+				undo_redo.add_do_method(self, "remove_child", child)
+				undo_redo.add_undo_reference(child)
+				undo_redo.add_undo_method(self, "add_child", child)
+				undo_redo.commit_action()
+			elif child.get_name().ends_with("-land") :
+				undo_redo.add_do_method(self, "remove_child", child)
+				undo_redo.add_undo_reference(child)
+				undo_redo.add_undo_method(self, "add_child", child)
+				undo_redo.commit_action()
+			elif child.get_name().ends_with("-path") :
+				undo_redo.add_do_method(self, "remove_child", child)
+				undo_redo.add_undo_reference(child)
+				undo_redo.add_undo_method(self, "add_child", child)
+				undo_redo.commit_action()
+			#elif child.get_name().ends_with("Collider") :
+				#undo_redo.add_do_method(self, "remove_child", child)
+				#undo_redo.add_undo_reference(child)
+				#undo_redo.add_undo_method(self, "add_child", child)
+				#undo_redo.commit_action()
+	else :
+		for child in get_children() :
+			if child.get_name().ends_with("-water") :
+				child.queue_free()
+			elif child.get_name().ends_with("-land") :
+				child.queue_free()
+			elif child.get_name().ends_with("-path") :
+				child.queue_free()
 
 
 func createGrass(noise : Image, threshold : float) -> void :
@@ -528,8 +549,10 @@ func createGrass(noise : Image, threshold : float) -> void :
 				elif i != 0:
 					mat.set_shader_parameter("visibleRange", grassLOD[1])
 					grassLayer.set_visibility_range_end(grassLOD[1])
+				elif i == 0 :
+					grassLayer.set_gi_mode(GeometryInstance3D.GI_MODE_DISABLED)
 				grassLayerMesh.surface_set_material(0, mat)
-			print(name)
+				
 			createTree()
 
 func createForestMesh(ogMesh : ArrayMesh, noiseImg : Image, threshold : float) -> ArrayMesh :
@@ -576,6 +599,7 @@ func createForestMesh(ogMesh : ArrayMesh, noiseImg : Image, threshold : float) -
 	surface_array[Mesh.ARRAY_COLOR] = packedColor
 	surface_array[Mesh.ARRAY_INDEX] = newIndices
 	surface_array[Mesh.ARRAY_TEX_UV] = packedUV
+	surface_array[Mesh.ARRAY_TEX_UV2] = packedUV
 	
 	var tempMesh : ArrayMesh = ArrayMesh.new()
 	tempMesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, surface_array)
@@ -608,7 +632,6 @@ func createLowRezGrassMesh2(ogMesh : ArrayMesh) -> ArrayMesh :
 	importer_mesh.add_surface(Mesh.PRIMITIVE_TRIANGLES, ogMesh.surface_get_arrays(0))
 	var normal_merge_angle = 25.0
 	importer_mesh.generate_lods(normal_merge_angle, normal_merge_angle, [])
-	print("damn")
 	var finalMesh : ArrayMesh = ArrayMesh.new()
 	var testMeshArr : Array = importer_mesh.get_mesh().surface_get_arrays(0)
 	var packedVert : PackedVector3Array  = testMeshArr[Mesh.ARRAY_VERTEX]
@@ -763,14 +786,13 @@ func createTree() -> void :
 	var shapeNode : ProtonScatterShape = scatterNode.get_node("ScatterShape")
 	var shape : ProtonScatterBoxShape = ProtonScatterBoxShape.new()
 	var aabb : AABB = get_child(0).get_mesh().get_aabb()
-	prints(shape, aabb)
 	shapeNode.set_position(Vector3(aabb.get_center().x, 0, aabb.get_center().z))
 	shape.size = aabb.size
 	shapeNode.shape = shape
 	scatterNode.modifier_stack.stack[0].amount = treeDensity * aabb.size.x * aabb.size.z
 	await scatterNode.build_completed
 	var outputNode : Marker3D = get_node("ProtonScatter/ScatterOutput")
-	outputNode.reparent(self)
+	outputNode.call_deferred("reparent", self)
 	scatterNode.queue_free()
 	var collider : StaticBody3D = get_node("./forestCollider")
 	collider.queue_free()

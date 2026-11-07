@@ -20,7 +20,9 @@ func run_export() -> void:
 		child.set_position(Vector3(0, 0, 0))
 		for childChilren in child.get_children() :
 			var mat : BaseMaterial3D = childChilren.get_mesh().surface_get_material(0)
-			mat.set_transparency(BaseMaterial3D.TRANSPARENCY_ALPHA)
+			mat.set_transparency(BaseMaterial3D.TRANSPARENCY_ALPHA_SCISSOR)
+			mat.set_flag(BaseMaterial3D.FLAG_DONT_RECEIVE_SHADOWS, true)
+			#mat.set_depth_draw_mode(BaseMaterial3D.DEPTH_DRAW_DISABLED)
 			# Create a clean, sanitized file name from the node name
 			# Sanitizing replaces characters like '(' and ')' with underscores to keep file paths safe
 			var sanitized_name: String = child.name.validate_node_name().to_lower()
